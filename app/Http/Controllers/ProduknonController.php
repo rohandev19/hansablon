@@ -6,7 +6,7 @@ use App\Models\Kategori;
 use App\Models\ProdukNon;
 use Illuminate\Http\Request;
 
-class ProduknonController extends Controller
+class ProdukNonController extends Controller
 {
     /**
      * Display a listing of the resource.

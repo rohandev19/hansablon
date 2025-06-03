@@ -30,11 +30,12 @@
                     </a>
                 </li>
 
-                <li class="{{ request()->is('customer/produk_non*') ? 'mm-active' : '' }}">
-                    <a href="#" class="waves-effect">
+            
+              <li class="{{ request()->is('customer/produk_non/*') ? 'mm-active' : '' }}">
+                    <a href="{{ Route('customer.produk_non') }}" class="waves-effect">
                         <i class="mdi mdi-tshirt-crew-outline"></i><span> Produk Non Grosir</span>
                     </a>
-                </li>
+                </li> 
 
                 <li class="menu-title">Pesanan Saya</li>
                 @php

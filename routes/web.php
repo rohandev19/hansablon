@@ -18,6 +18,7 @@ use App\Http\Controllers\customer\PesananCustomerController;
 use App\Http\Controllers\customer\PesananDPCustomerController;
 use App\Http\Controllers\customer\ProfileCustomerController;
 use App\Http\Controllers\customer\RiwayatPesananController;
+use App\Http\Controllers\customer\CustomerNonGrosirController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KategoriProdukController;
 use App\Http\Controllers\ProdukController;
@@ -115,8 +116,8 @@ Route::middleware(['auth', 'user-access:pembeli'])->group(function () {
     Route::get('/customer/produk/kategori/{kategori}', [CustomerProdukController::class, 'kategori_produk'])->name('customer.kategori_produk');
 
     Route::get('/customer/produk_non', [CustomerNonGrosirController::class, 'index'])->name('customer.produk_non');
-    Route::get('/customer/produk_non/detail/{produk}', [CustomerNonGrosirController::class, 'detail_produk'])->name('customer.detail_produk');
-    Route::get('/customer/produk_non/kategori{kategori}', [CustomerNonGrosirController::class, 'kategori_produk'])->name('customer.kategori_produk');
+    Route::get('/customer/produk_non/detail/{produk}', [CustomerNonGrosirController::class, 'detail_produk'])->name('customer.detail_non_grosir');
+    Route::get('/customer/produk_non/kategori{kategori}', [CustomerNonGrosirController::class, 'kategori_produk'])->name('customer.kategori_non_grosir');
 
     Route::resource('/customer/keranjang', KeranjangCustomerController::class);
 

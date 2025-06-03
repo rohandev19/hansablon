@@ -80,9 +80,11 @@
 
                                         <div class="text-center mt-2">
 
-                                            <a href="{{ route('customer.detail_produk', $produks->id_produk) }}" class="text-dark">
-                                                <h5 class="font-size-18">{{ Str::title($produks->nama_produk) }}</h5>
-                                            </a>
+                                        <a href="{{ route('customer.detail_non_grosir', $produks->id_produknon) }}" class="text-dark">
+    <h5 class="font-size-18">{{ Str::title($produks->nama_produk) }}</h5>
+</a>
+
+
 
                                             <h5 class="mt-3 mb-0">
                                                 @php
