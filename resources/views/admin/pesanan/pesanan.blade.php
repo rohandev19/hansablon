@@ -136,14 +136,16 @@
                                                                     <dl class="row mb-0">
                                                                         <dt class="col-sm-4">Nama Produk</dt>
                                                                         <dd class="col-sm-8">
-                                                                            {{ Str::title($konfirmasi->nama_produk) }}</dd>
+                                                                            {{ Str::title($konfirmasi->nama_produk) }}
+                                                                        </dd>
                                                                         <dt class="col-sm-4">Total Pesanan</dt>
                                                                         <dd class="col-sm-8">{{ $konfirmasi->quantity }}
                                                                             Pcs
                                                                         </dd>
                                                                         <dt class="col-sm-4">Berat</dt>
                                                                         <dd class="col-sm-8">
-                                                                            {{ $konfirmasi->quantity * 145 }} Gram</dd>
+                                                                            {{ $konfirmasi->quantity * 145 }} Gram
+                                                                        </dd>
                                                                         <dt class="col-sm-4">Variasi </dt>
                                                                         <dd class="col-sm-8">{{ $konfirmasi->variasi }}
                                                                         </dd>
@@ -207,20 +209,18 @@
                                                         </td>
                                                         <td style="text-align: center">
                                                             <a href="{{ route('pesananAdmin.cetak_pesanan', $ongoing->id_pesanan) }}"
-                                                                class="btn btn-secondary"><i
-                                                                    class="mdi mdi-note-outline"></i> Cetak</a>
+                                                                class="btn btn-secondary"><i class="mdi mdi-note-outline"></i>
+                                                                Cetak</a>
                                                         </td>
                                                         <td>
-                                                            <a href="" class="me-3 text-success"
-                                                                data-bs-toggle="modal"
+                                                            <a href="" class="me-3 text-success" data-bs-toggle="modal"
                                                                 data-bs-target="#resi-{{ $ongoing->id_pesanan }}"><i
                                                                     class="mdi mdi-truck-fast font-size-18"></i> Kirim
                                                                 Produk</a>
                                                         </td>
                                                     </tr>
-                                                    <div id="resi-{{ $ongoing->id_pesanan }}" class="modal fade"
-                                                        tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                                                        aria-hidden="true">
+                                                    <div id="resi-{{ $ongoing->id_pesanan }}" class="modal fade" tabindex="-1"
+                                                        role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                                         <div class="modal-dialog">
                                                             <div class="modal-content">
                                                                 <div class="modal-body">
@@ -231,12 +231,10 @@
                                                                             #P00{{ $ongoing->id_pesanan }}</label>
                                                                         @csrf
                                                                         @method('put')
-                                                                        <input class="form-control mb-3" name="resi"
-                                                                            type="text"
+                                                                        <input class="form-control mb-3" name="resi" type="text"
                                                                             placeholder="Nomor Resi Pengiriman JNE"
                                                                             id="example-text-input">
-                                                                        <button type="submit"
-                                                                            class="btn btn-primary w-100"
+                                                                        <button type="submit" class="btn btn-primary w-100"
                                                                             onclick="return confirm('Apakah Nomor Resi Telah Benar ?');">Kirim
                                                                             Produk</button>
                                                                     </form>
@@ -257,8 +255,8 @@
                                                                     @endif
                                                                     <br><br>
                                                                     <textarea name="" id="" cols="30" rows="10" disabled>
-                                                                        {{ $ongoing->request_user }}
-                                                                    </textarea>
+                                                                                        {{ $ongoing->request_user }}
+                                                                                    </textarea>
                                                                 </div>
                                                             </div><!-- /.modal-content -->
                                                         </div><!-- /.modal-dialog -->
@@ -300,8 +298,8 @@
                                                         </td>
                                                         <td style="text-align: center">
                                                             <a href="{{ route('pesananAdmin.cetak_pesanan', $kirim->id_pesanan) }}"
-                                                                class="btn btn-secondary"><i
-                                                                    class="mdi mdi-note-outline"></i> Cetak</a>
+                                                                class="btn btn-secondary"><i class="mdi mdi-note-outline"></i>
+                                                                Cetak</a>
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -366,7 +364,7 @@
                                                         </td>
                                                         <td style="text-align: center">
                                                             @php
-                                                                $dp = $konfirmasi_dp->total_bayar * 0.5;
+                                                                $dp = $konfirmasi_dp->total_bayar * 0.25;
                                                                 echo rupiah($dp);
                                                             @endphp
                                                         </td>
@@ -389,9 +387,9 @@
                                                                 Tolak</a>
                                                         </td>
                                                     </tr>
-                                                    <div id="myModalDP-{{ $konfirmasi_dp->id_pesanan }}"
-                                                        class="modal fade" tabindex="-1" role="dialog"
-                                                        aria-labelledby="myModalLabel" aria-hidden="true">
+                                                    <div id="myModalDP-{{ $konfirmasi_dp->id_pesanan }}" class="modal fade"
+                                                        tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                                                        aria-hidden="true">
                                                         <div class="modal-dialog">
                                                             <div class="modal-content">
                                                                 <div class="modal-body">
@@ -410,7 +408,8 @@
                                                                         </dd>
                                                                         <dt class="col-sm-4">Berat</dt>
                                                                         <dd class="col-sm-8">
-                                                                            {{ $konfirmasi_dp->quantity * 145 }} Gram</dd>
+                                                                            {{ $konfirmasi_dp->quantity * 145 }} Gram
+                                                                        </dd>
                                                                         <dt class="col-sm-4">Variasi </dt>
                                                                         <dd class="col-sm-8">{{ $konfirmasi_dp->variasi }}
                                                                         </dd>
@@ -436,8 +435,7 @@
                                                                             class="text-danger">* Klik Foto Untuk
                                                                             Zoom</span></p>
                                                                     <img src='/bukti_bayar/{{ $konfirmasi_dp->bukti_bayar_dp }}'
-                                                                        width='100' height='100'
-                                                                        data-action="zoom" />
+                                                                        width='100' height='100' data-action="zoom" />
                                                                 </div>
                                                             </div><!-- /.modal-content -->
                                                         </div><!-- /.modal-dialog -->
@@ -488,18 +486,17 @@
                                                                 <span class="badge bg-success">Customer Telah Mengirim Sisa
                                                                     Tagihan</span>
                                                             @elseif($ongoing_dp->dp_status == 'tagihan sisa tolak')
-                                                            <span class="badge bg-warning">Sisa Tagihan Di Tolak</span>
+                                                                <span class="badge bg-warning">Sisa Tagihan Di Tolak</span>
                                                             @endif
                                                         </td>
                                                         <td style="text-align: center">
                                                             <a href="{{ route('pesananAdmin.cetak_pesanan', $ongoing_dp->id_pesanan) }}"
-                                                                class="btn btn-secondary"><i
-                                                                    class="mdi mdi-note-outline"></i> Cetak</a>
+                                                                class="btn btn-secondary"><i class="mdi mdi-note-outline"></i>
+                                                                Cetak</a>
                                                         </td>
                                                         <td>
                                                             @if ($ongoing_dp->dp_status == 'lunas')
-                                                                <a href="" class="me-3 text-success"
-                                                                    data-bs-toggle="modal"
+                                                                <a href="" class="me-3 text-success" data-bs-toggle="modal"
                                                                     data-bs-target="#resi-{{ $ongoing_dp->id_pesanan }}"><i
                                                                         class="mdi mdi-truck-fast font-size-18"></i> Kirim
                                                                     Produk</a>
@@ -542,12 +539,10 @@
                                                                             #P00{{ $ongoing_dp->id_pesanan }}</label>
                                                                         @csrf
                                                                         @method('put')
-                                                                        <input class="form-control mb-3" name="resi"
-                                                                            type="text"
+                                                                        <input class="form-control mb-3" name="resi" type="text"
                                                                             placeholder="Nomor Resi Pengiriman JNE"
                                                                             id="example-text-input">
-                                                                        <button type="submit"
-                                                                            class="btn btn-primary w-100"
+                                                                        <button type="submit" class="btn btn-primary w-100"
                                                                             onclick="return confirm('Apakah Nomor Resi Telah Benar ?');">Kirim
                                                                             Produk</button>
                                                                     </form>
@@ -568,19 +563,19 @@
                                                                     @endif
                                                                     <br><br>
                                                                     <textarea name="" id="" cols="30" rows="10" disabled>
-                                                                        {{ $ongoing_dp->request_user }}
-                                                                    </textarea>
+                                                                                        {{ $ongoing_dp->request_user }}
+                                                                                    </textarea>
                                                                 </div>
                                                             </div><!-- /.modal-content -->
                                                         </div><!-- /.modal-dialog -->
                                                     </div>
-                                                    <div id="myModaltagihandp-{{ $ongoing_dp->id_pesanan }}"
-                                                        class="modal fade" tabindex="-1" role="dialog"
-                                                        aria-labelledby="myModalLabel" aria-hidden="true">
+                                                    <div id="myModaltagihandp-{{ $ongoing_dp->id_pesanan }}" class="modal fade"
+                                                        tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                                                        aria-hidden="true">
                                                         <div class="modal-dialog">
                                                             <div class="modal-content">
                                                                 @php
-                                                                    $dp = $ongoing_dp->total_bayar * 0.5;
+                                                                    $dp = $ongoing_dp->total_bayar * 0.25;
                                                                     // echo rupiah($dp);
                                                                 @endphp
                                                                 <div class="modal-body">
@@ -590,14 +585,16 @@
                                                                     <dl class="row mb-0">
                                                                         <dt class="col-sm-4">Nama Produk</dt>
                                                                         <dd class="col-sm-8">
-                                                                            {{ Str::title($ongoing_dp->nama_produk) }}</dd>
+                                                                            {{ Str::title($ongoing_dp->nama_produk) }}
+                                                                        </dd>
                                                                         <dt class="col-sm-4">Total Pesanan</dt>
                                                                         <dd class="col-sm-8">{{ $ongoing_dp->quantity }}
                                                                             Pcs
                                                                         </dd>
                                                                         <dt class="col-sm-4">Berat</dt>
                                                                         <dd class="col-sm-8">
-                                                                            {{ $ongoing_dp->quantity * 145 }} Gram</dd>
+                                                                            {{ $ongoing_dp->quantity * 145 }} Gram
+                                                                        </dd>
                                                                         <dt class="col-sm-4">Variasi </dt>
                                                                         <dd class="col-sm-8">{{ $ongoing_dp->variasi }}
                                                                         </dd>
@@ -617,8 +614,8 @@
                                                                         <dd class="col-sm-8">
                                                                             @php
                                                                                 echo rupiah($dp);
-                                                                            @endphp <span
-                                                                                class="badge bg-success"> Lunas</span></dd>
+                                                                            @endphp <span class="badge bg-success"> Lunas</span>
+                                                                        </dd>
                                                                         <dt class="col-sm-4">Sisa Tagihan</dt>
                                                                         <dd class="col-sm-8">
                                                                             @php
@@ -629,8 +626,7 @@
                                                                             class="text-danger">* Klik Foto Untuk
                                                                             Zoom</span></p>
                                                                     <img src='/bukti_bayar/{{ $ongoing_dp->bukti_bayar_dp_lunas }}'
-                                                                        width='100' height='100'
-                                                                        data-action="zoom" />
+                                                                        width='100' height='100' data-action="zoom" />
                                                                 </div>
                                                             </div><!-- /.modal-content -->
                                                         </div><!-- /.modal-dialog -->
@@ -689,8 +685,8 @@
 
 @section('js')
     <script>
-        window.setTimeout(function() {
-            $(".alert").fadeTo(500, 0).slideUp(500, function() {
+        window.setTimeout(function () {
+            $(".alert").fadeTo(500, 0).slideUp(500, function () {
                 $(this).remove();
             });
         }, 2500);

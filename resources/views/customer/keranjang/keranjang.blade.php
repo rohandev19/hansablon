@@ -92,8 +92,7 @@
                                                 </td>
                                                 <td>
                                                     <div style="width: 120px;" class="product-cart-touchspin">
-                                                        <form
-                                                            action="{{ route('keranjang.update', $produk->id_keranjang) }}"
+                                                        <form action="{{ route('keranjang.update', $produk->id_keranjang) }}"
                                                             method="post">
                                                             @csrf
                                                             @method('put')
@@ -143,10 +142,12 @@
                                                     @endif
                                                 </td>
                                                 <td class="text-center">
-                                                    <a href="{{ route('keranjang.show', $produk->id_keranjang) }}" class="btn btn-success btn-sm waves-effect waves-light"><i class="mdi mdi-cart-variant"></i> Checkout</a>
+                                                    <a href="{{ route('keranjang.show', $produk->id_keranjang) }}"
+                                                        class="btn btn-success btn-sm waves-effect waves-light"><i
+                                                            class="mdi mdi-cart-variant"></i> Checkout</a>
                                                     -
-                                                    <form action="{{ route('keranjang.destroy', $produk->id_keranjang) }}" method="POST"
-                                                        style="display:inline"
+                                                    <form action="{{ route('keranjang.destroy', $produk->id_keranjang) }}"
+                                                        method="POST" style="display:inline"
                                                         onsubmit="return confirm('Apakah Yakin akan Di Hapus ?');">
                                                         @method('delete')
                                                         @csrf
@@ -183,8 +184,8 @@
     <script src="/morvin/dist/assets/js/pages/ecommerce-cart.init.js"></script>
 
     <script>
-        window.setTimeout(function() {
-            $(".alert").fadeTo(500, 0).slideUp(500, function() {
+        window.setTimeout(function () {
+            $(".alert").fadeTo(500, 0).slideUp(500, function () {
                 $(this).remove();
             });
         }, 3000);

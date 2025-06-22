@@ -43,7 +43,7 @@
                                                     </a>
                                                     </li>
                                                     @forelse ($kategori as $kategori)
-                                                        <li><a href="{{ route('customer.kategori_produk', $kategori->id_kategori) }}"><i class="mdi mdi-circle-medium me-1"></i>
+                                                        <li><a href="{{ route('customer.kategori_non_grosir', $kategori->id_kategori) }}"><i class="mdi mdi-circle-medium me-1"></i>
                                                                 {{ Str::upper($kategori->jenis_kategori) }}
                                                             </a>
                                                         </li>
@@ -80,13 +80,13 @@
 
                                         <div class="text-center mt-2">
 
-                                            <a href="{{ route('customer.detail_produk', $produks->id_produk) }}" class="text-dark">
+                                            <a href="{{ route('customer.detail_non_grosir', ['id_produk' => $produks->id_produknon]) }}" class="text-dark">
                                                 <h5 class="font-size-18">{{ Str::title($produks->nama_produk) }}</h5>
                                             </a>
 
                                             <h5 class="mt-3 mb-0">
                                                 @php
-                                                    echo rupiah($produks->harga_produk1);
+                                                    echo rupiah($produks->harga_produk);
                                                 @endphp</h5>
                                         </div>
                                     </div>

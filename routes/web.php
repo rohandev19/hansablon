@@ -8,17 +8,17 @@ use App\Http\Controllers\Admin\RekeningAdminController;
 use App\Http\Controllers\AdminDashboard;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AplikasiSablonController;
-use App\Http\Controllers\customer\AlamatCustomerController;
-use App\Http\Controllers\customer\ChatCustomerController;
+use App\Http\Controllers\Customer\AlamatCustomerController;
+use App\Http\Controllers\Customer\ChatCustomerController;
 use App\Http\Controllers\Customer\CustomerProdukController;
 use App\Http\Controllers\Customer\DashboardCustomerController;
-use App\Http\Controllers\customer\KeranjangCustomerController;
+use App\Http\Controllers\Customer\KeranjangCustomerController;
 use App\Http\Controllers\Customer\KomentarCustomerController;
-use App\Http\Controllers\customer\PesananCustomerController;
-use App\Http\Controllers\customer\PesananDPCustomerController;
-use App\Http\Controllers\customer\ProfileCustomerController;
-use App\Http\Controllers\customer\RiwayatPesananController;
-use App\Http\Controllers\customer\CustomerNonGrosirController;
+use App\Http\Controllers\Customer\PesananCustomerController;
+use App\Http\Controllers\Customer\PesananDPCustomerController;
+use App\Http\Controllers\Customer\ProfileCustomerController;
+use App\Http\Controllers\Customer\RiwayatPesananController;
+use App\Http\Controllers\Customer\CustomerNonGrosirController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KategoriProdukController;
 use App\Http\Controllers\ProdukController;
@@ -116,10 +116,11 @@ Route::middleware(['auth', 'user-access:pembeli'])->group(function () {
     Route::get('/customer/produk/kategori/{kategori}', [CustomerProdukController::class, 'kategori_produk'])->name('customer.kategori_produk');
 
     Route::get('/customer/produk_non', [CustomerNonGrosirController::class, 'index'])->name('customer.produk_non');
-    Route::get('/customer/produk_non/detail/{produk}', [CustomerNonGrosirController::class, 'detail_produk'])->name('customer.detail_non_grosir');
-    Route::get('/customer/produk_non/kategori{kategori}', [CustomerNonGrosirController::class, 'kategori_produk'])->name('customer.kategori_non_grosir');
+    Route::get('/customer/produk_non/detail/{id_produk}', [CustomerNonGrosirController::class, 'detail_produk'])->name('customer.detail_non_grosir');
+    Route::get('/customer/produk_non/kategori/{kategori}', [CustomerNonGrosirController::class, 'kategori_produk'])->name('customer.kategori_non_grosir');
 
     Route::resource('/customer/keranjang', KeranjangCustomerController::class);
+    Route::post('/keranjang/nongrosir', [KeranjangCustomerController::class, 'nongrosir'])->name('keranjang.nongrosir');
 
     Route::get('/customer/alamat/checkout/{alamat}', [AlamatCustomerController::class, 'create_checkout'])->name('customer.alamat_checkout');
     Route::post('/customer/alamat/checkout/store', [AlamatCustomerController::class, 'store_alamat_checkout'])->name('customer.alamat_checkout_store');

@@ -110,7 +110,8 @@
                                                         @if ($pesanan_paid->status == 'menunggu pembayaran')
                                                             <td>
                                                                 <div class="badge badge-soft-danger font-size-12">
-                                                                    {{ Str::upper($pesanan_paid->status) }}</div>
+                                                                    {{ Str::upper($pesanan_paid->status) }}
+                                                                </div>
                                                             </td>
                                                             <td>
                                                                 <a href="{{ route('pesanan.edit', $pesanan_paid->id_pesanan) }}"
@@ -120,14 +121,16 @@
                                                         @elseif ($pesanan_paid->status == 'Bukti Pembayaraan Sedang Di Tinjau')
                                                             <td>
                                                                 <div class="badge badge-soft-warning font-size-12">
-                                                                    {{ Str::upper($pesanan_paid->status) }}</div>
+                                                                    {{ Str::upper($pesanan_paid->status) }}
+                                                                </div>
                                                             </td>
                                                             <td>
                                                             </td>
                                                         @elseif ($pesanan_paid->status == 'Pesanan Di Tolak')
                                                             <td>
                                                                 <div class="badge badge-soft-danger font-size-12">
-                                                                    {{ Str::upper($pesanan_paid->status) }}</div>
+                                                                    {{ Str::upper($pesanan_paid->status) }}
+                                                                </div>
                                                             </td>
                                                             <td>
                                                                 <a href="{{ route('pesanan.edit', $pesanan_paid->id_pesanan) }}"
@@ -188,7 +191,8 @@
                                                                     Tolak</span>
                                                             @endif
                                                             @if ($ongoing->dp_status == 'tagihan send')
-                                                                <span class="badge bg-primary">Sisa Tagihan Sedang Di Cek Admin</span>
+                                                                <span class="badge bg-primary">Sisa Tagihan Sedang Di Cek
+                                                                    Admin</span>
                                                             @endif
                                                             @if ($ongoing->dp_status == 'tagihan sisa tolak')
                                                                 <span class="badge bg-danger">Sisa Tagihan Di Tolak Admin</span>
@@ -197,20 +201,17 @@
                                                         <td>
                                                             @if ($ongoing->tipe_pembayaran == 'lunas')
                                                                 <a href="{{ route('pesanan.show', $ongoing->id_pesanan) }}"
-                                                                    class="btn btn-secondary"><i
-                                                                        class="mdi mdi-note-outline"></i> Cetak Invoice</a>
+                                                                    class="btn btn-secondary"><i class="mdi mdi-note-outline"></i>
+                                                                    Cetak Invoice</a>
                                                             @endif
                                                             @if ($ongoing->dp_status == 'tagihan deliver')
-                                                                <button type="button"
-                                                                    class="btn btn-info btn-rounded btn-sm"
+                                                                <button type="button" class="btn btn-info btn-rounded btn-sm"
                                                                     data-bs-toggle="modal"
                                                                     data-bs-target=".bs-example-modal-center-{{ $ongoing->id_pesanan }}">Bayar
-                                                                    Sisa Tagihan <i
-                                                                        class="fas fa-money-bill-alt"></i></button>
+                                                                    Sisa Tagihan <i class="fas fa-money-bill-alt"></i></button>
                                                             @endif
                                                             @if ($ongoing->dp_status == 'tagihan sisa tolak')
-                                                                <button type="button"
-                                                                    class="btn btn-info btn-rounded btn-sm"
+                                                                <button type="button" class="btn btn-info btn-rounded btn-sm"
                                                                     data-bs-toggle="modal"
                                                                     data-bs-target=".bs-example-modal-center-{{ $ongoing->id_pesanan }}">Bayar
                                                                     Ulang Sisa Tagihan <i
@@ -231,7 +232,7 @@
                                                                     </button>
                                                                 </div>
                                                                 @php
-                                                                    $dp = $ongoing->total_bayar * 0.5;
+                                                                    $dp = $ongoing->total_bayar * 0.25;
                                                                     // echo rupiah($dp);
                                                                 @endphp
                                                                 <div class="modal-body">
@@ -250,7 +251,8 @@
                                                                         </dd>
                                                                         <dt class="col-sm-4">Berat</dt>
                                                                         <dd class="col-sm-8">
-                                                                            {{ $ongoing->quantity * 145 }} Gram</dd>
+                                                                            {{ $ongoing->quantity * 145 }} Gram
+                                                                        </dd>
                                                                         <dt class="col-sm-4">Variasi </dt>
                                                                         <dd class="col-sm-8">{{ $ongoing->variasi }}
                                                                         </dd>
@@ -270,35 +272,35 @@
                                                                         <dd class="col-sm-8">
                                                                             @php
                                                                                 echo rupiah($dp);
-                                                                            @endphp <span
-                                                                                class="badge bg-success"> Lunas</span></dd>
+                                                                            @endphp <span class="badge bg-success"> Lunas</span>
+                                                                        </dd>
                                                                         <dt class="col-sm-4">Sisa Tagihan</dt>
                                                                         <dd class="col-sm-8">
                                                                             @php
                                                                                 echo rupiah($dp);
                                                                             @endphp</dd>
                                                                     </dl>
-                                                                    <form action="{{ route('customer.pesanan_dp', $ongoing->id_pesanan) }}" method="post"
-                                                                        enctype="multipart/form-data">
+                                                                    <form
+                                                                        action="{{ route('customer.pesanan_dp', $ongoing->id_pesanan) }}"
+                                                                        method="post" enctype="multipart/form-data">
                                                                         @csrf
                                                                         @method('put')
-                                                                    <div class="col-md-12 mb-2">
-                                                                        <input type="file" name="bukti_bayar"
-                                                                            class="form-control @error('bukti_bayar') is-invalid @enderror"
-                                                                            accept="image/*" id="imgInp1" required>
-                                                                        @error('bukti_bayar')
-                                                                            <span
-                                                                                class="invalid-feedback">{{ $message }}</span>
-                                                                        @enderror
-                                                                    </div>
-                                                                    <div class="col-md-12 mb-3">
-                                                                        <img id="output1"
-                                                                            src="/morvin/dist/assets/images/upload.png"
-                                                                            width="150px" height="110px" />
-                                                                    </div>
-                                                                    <button type="submit"
-                                                                        class="btn btn-primary w-100">Kirim Bukti
-                                                                        Pembayaran</button>
+                                                                        <div class="col-md-12 mb-2">
+                                                                            <input type="file" name="bukti_bayar"
+                                                                                class="form-control @error('bukti_bayar') is-invalid @enderror"
+                                                                                accept="image/*" id="imgInp1" required>
+                                                                            @error('bukti_bayar')
+                                                                                <span class="invalid-feedback">{{ $message }}</span>
+                                                                            @enderror
+                                                                        </div>
+                                                                        <div class="col-md-12 mb-3">
+                                                                            <img id="output1"
+                                                                                src="/morvin/dist/assets/images/upload.png"
+                                                                                width="150px" height="110px" />
+                                                                        </div>
+                                                                        <button type="submit"
+                                                                            class="btn btn-primary w-100">Kirim Bukti
+                                                                            Pembayaran</button>
                                                                     </form>
                                                                 </div>
                                                             </div><!-- /.modal-content -->
@@ -344,40 +346,37 @@
                                                         </td>
                                                         <td>
                                                             <a href="{{ route('pesanan.show', $kirim->id_pesanan) }}"
-                                                                class="btn btn-secondary"><i
-                                                                    class="mdi mdi-note-outline"></i> Cetak</a>
+                                                                class="btn btn-secondary"><i class="mdi mdi-note-outline"></i>
+                                                                Cetak</a>
                                                         </td>
                                                         <td>
-                                                            <a href="" class="me-3 text-success"
-                                                                data-bs-toggle="modal"
+                                                            <a href="" class="me-3 text-success" data-bs-toggle="modal"
                                                                 data-bs-target="#komentar-{{ $kirim->id_pesanan }}"><i
                                                                     class="mdi mdi-truck-fast font-size-18"></i> Barang
                                                                 Sampai</a>
                                                         </td>
                                                     </tr>
-                                                    <div id="komentar-{{ $kirim->id_pesanan }}" class="modal fade"
-                                                        tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                                                        aria-hidden="true">
+                                                    <div id="komentar-{{ $kirim->id_pesanan }}" class="modal fade" tabindex="-1"
+                                                        role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                                         <div class="modal-dialog">
                                                             <div class="modal-content">
                                                                 <div class="modal-body">
                                                                     <form action="{{ route('customer.store_komentar') }}"
                                                                         method="post">
                                                                         @csrf
-                                                                        <input type="text" name="id_pesanan"
-                                                                            id=""
+                                                                        <input type="text" name="id_pesanan" id=""
                                                                             value="{{ $kirim->id_pesanan }}" hidden>
-                                                                        <input type="text" name="id_produk"
-                                                                            id=""
+                                                                        <input type="text" name="id_produk" id=""
                                                                             value="{{ $kirim->id_produk }}" hidden>
-                                                                        <input type="text" name="id_user"
-                                                                            id="" value="{{ Auth::user()->id }}"
-                                                                            hidden>
+                                                                        <input type="text" name="id_user" id=""
+                                                                            value="{{ Auth::user()->id }}" hidden>
                                                                         <div class="row">
                                                                             <div class="col-xl-12 mb-2">
                                                                                 <label for="">Komentar
                                                                                     Produk</label>
-                                                                                <textarea class="form-control" name="komentar" id="" cols="30" rows="10">Produk Memuaskan Sekali</textarea>
+                                                                                <textarea class="form-control" name="komentar"
+                                                                                    id="" cols="30"
+                                                                                    rows="10">Produk Memuaskan Sekali</textarea>
                                                                             </div>
                                                                             <div class="col-xl-12 mb-2">
                                                                                 <button type="submit"

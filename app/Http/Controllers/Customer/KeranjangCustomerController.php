@@ -28,6 +28,7 @@ class KeranjangCustomerController extends Controller
         return view('customer.keranjang.keranjang', compact(['keranjang']));
     }
 
+
     /**
      * Show the form for creating a new resource.
      *
@@ -60,6 +61,27 @@ class KeranjangCustomerController extends Controller
         return to_route('keranjang.index');
     }
 
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function nongrosir(Request $request)
+    {
+
+
+        Keranjang::create([
+            'id_user' => Auth::user()->id,
+            'id_produk' => $request->id_produknon,
+            'total' => $request->demo0,
+        ]);
+
+
+        return to_route('keranjang.index');
+    }
+
     /**
      * Display the specified resource.
      *
@@ -70,20 +92,21 @@ class KeranjangCustomerController extends Controller
     {
         $id = $id;
 
+
         $alamat = Alamat::where('id_user', Auth::user()->id)
-        ->orderBy('id_user_alamat', 'DESC')
-        ->get();
+            ->orderBy('id_user_alamat', 'DESC')
+            ->get();
 
         $keranjang = Keranjang::join('produk', 'keranjang.id_produk', '=', 'produk.id_produk')
-        ->select('keranjang.*', 'produk.*')
-        ->where('keranjang.id_keranjang', $id)
-        ->get();
+            ->select('keranjang.*', 'produk.*')
+            ->where('keranjang.id_keranjang', $id)
+            ->get();
 
         $variasi = Variasi::get();
 
         $sablon = Sablon::get();
 
-        return view('customer.checkout.checkout', compact(['alamat','id','keranjang','variasi','sablon']));
+        return view('customer.checkout.checkout', compact(['alamat', 'id', 'keranjang', 'variasi', 'sablon']));
     }
 
     /**

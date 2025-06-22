@@ -20,7 +20,7 @@ class ChatAdminController extends Controller
         ->groupBy('users.id', 'users.nama', 'users.foto_profile')
         ->orderBy('chat.created_at', 'desc')
         ->get();
-        dd($chat);
+        
 
         return view('admin.chat.chat', compact(['chat']));
     }

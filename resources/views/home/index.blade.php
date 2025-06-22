@@ -5,16 +5,16 @@
     <div class="sidebar-social d-none d-md-block">
         <div class="table">
             <div class="table-cell">
-                <ul>
-                    <li><a href="#" target="_blank" title="Google Plus"><i
-                                class="zmdi zmdi-google-plus"></i></a></li>
-                    <li><a href="#" target="_blank" title="Twitter"><i
-                                class="zmdi zmdi-twitter"></i></a></li>
-                    <li><a href="#" target="_blank" title="Facebook"><i
-                                class="zmdi zmdi-facebook"></i></a></li>
-                    <li><a href="#" target="_blank" title="Linkedin"><i
-                                class="zmdi zmdi-linkedin"></i></a></li>
-                </ul>
+                <!-- <ul> -->
+                    <!-- <li><a href="#" target="_blank" title="Google Plus"><i -->
+                                <!-- class="zmdi zmdi-google-plus"></i></a></li> -->
+                    <!-- <li><a href="#" target="_blank" title="Twitter"><i -->
+                                <!-- class="zmdi zmdi-twitter"></i></a></li> -->
+                    <!-- <li><a href="#" target="_blank" title="Facebook"><i -->
+                                <!-- class="zmdi zmdi-facebook"></i></a></li> -->
+                    <!-- <li><a href="#" target="_blank" title="Linkedin"><i -->
+                                <!-- class="zmdi zmdi-linkedin"></i></a></li> -->
+                <!-- </ul> -->
             </div>
         </div>
     </div>
@@ -100,9 +100,9 @@
         <div class="table">
             <div class="table-cell">
                 <ul>
-                    <li><a class="search-open" href="#" title="Search"><i
-                                class="zmdi zmdi-search"></i></a></li>
-                    <li><a href="#" title="Login"><i class="zmdi zmdi-lock"></i></a>
+                    <!-- <li><a class="search-open" href="#" title="Search"><i -->
+                                <!-- class="zmdi zmdi-search"></i></a></li> -->
+                   <!-- <li><a href="#" title="Login"><i class="zmdi zmdi-lock"></i></a>
                         <div class="customer-login text-left">
                             <form action="#">
                                 <h4 class="title-1 title-border text-uppercase mb-30">Registered customers</h4>
@@ -114,10 +114,10 @@
                                     type="submit">login</button>
                             </form>
                         </div>
+                    </li> -->
+                    <!-- <li><a href="my-account.html" title="My-Account"><i class="zmdi zmdi-account"></i></a> -->
                     </li>
-                    <li><a href="my-account.html" title="My-Account"><i class="zmdi zmdi-account"></i></a>
-                    </li>
-                    <li><a href="wishlist.html" title="Wishlist"><i class="zmdi zmdi-favorite"></i></a></li>
+                    <!-- <li><a href="wishlist.html" title="Wishlist"><i class="zmdi zmdi-favorite"></i></a></li> -->
                 </ul>
             </div>
         </div>

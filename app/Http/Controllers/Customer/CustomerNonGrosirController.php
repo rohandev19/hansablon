@@ -19,11 +19,11 @@ class CustomerNonGrosirController extends Controller
 
     public function detail_produk($id)
     {
-        $produk = ProdukNon::join('kategori', 'produk_non_grosir.kategori', '=', 'kategori.id_kategori')
-            ->select('produk_non_grosir.*', 'kategori.jenis_kategori')
+        $produk = ProdukNon::join('kategori', 'produknon.kategori', '=', 'kategori.id_kategori')
+            ->select('produknon.*', 'kategori.jenis_kategori')
             ->find($id);
 
-        $komentar = Komentar::join('produk_non_grosir', 'produk_non_grosir.id_produk', '=', 'komentar.id_produk')
+        $komentar = Komentar::join('produknon', 'produknon.id_produknon', '=', 'komentar.id_produk')
             ->join('users', 'users.id', '=', 'komentar.id_user')
             ->select('users.nama', 'komentar.*')
             ->where('komentar.id_produk', $id)

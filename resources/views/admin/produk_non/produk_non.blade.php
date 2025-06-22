@@ -37,18 +37,14 @@
                             <div class="mt-3">
                                 <table id="datatable" class="table table-bordered dt-responsive nowrap"
                                     style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                                    <thead>
-                                        <tr>
+                                   <thead>
                                             <th>Nama Produk</th>
                                             <th>Kategori Produk</th>
                                             <th>Harga Produk</th>
                                             <th>Foto Produk</th>
                                             <th>Tanggal Upload</th>
-                                            <th>
-                                                <center>Action</center>
-                                            </th>
-                                        </tr>
-                                    </thead>
+                                            <th><center>Action</center></th>
+                                   </thead>
                                     <tbody>
                                         @foreach ($produk as $data)
                                             <tr>
@@ -58,9 +54,9 @@
                                                 <td align="center">
                                                     <img src="/produk/{{ $data->foto_produk1 }}" alt=""
                                                         height="30px" width="30px">
-                                                </td>
-                                                <td>{{ $data->created_at }}</td>
-                                                <td align="center">
+                                                    </td>
+                                                    <td>{{ $data->created_at }}</td>
+                                                    <td align="center">
                                                     <a href="{{ route('produk_non.edit', $data->id_produknon) }}"
                                                         class="btn btn-warning waves-effect waves-light"><i
                                                             class="dripicons-pencil"></i> Edit</a>
@@ -73,7 +69,8 @@
                                                             class="btn btn-danger waves-effect waves-light"><i
                                                                 class="dripicons-trash"></i> Delete</button>
                                                     </form>
-                                                </td>
+</td>
+                                              <td></td>
                                             </tr>
                                         @endforeach
                                     </tbody>

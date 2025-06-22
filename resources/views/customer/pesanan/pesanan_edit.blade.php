@@ -1,5 +1,100 @@
 @extends('customer.layouts.master')
 
+@section('css')
+    {{-- CSS KUSTOM UNTUK TAMPILAN PEMBAYARAN BARU --}}
+    <style>
+        .step-card {
+            margin-bottom: 1.5rem;
+        }
+
+        .step-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #556ee6;
+            /* Warna primer tema */
+            color: #fff;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+
+        .rincian-table td {
+            border-top: 1px solid #f0f0f0;
+            padding: 0.75rem;
+        }
+
+        .rincian-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .rincian-table .item-name {
+            font-weight: 500;
+        }
+
+        .rincian-table .item-price {
+            text-align: right;
+        }
+
+        .rincian-total {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .rekening-card {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            transition: box-shadow 0.2s ease;
+        }
+
+        .rekening-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .rekening-card img {
+            max-height: 40px;
+            margin-right: 1rem;
+        }
+
+        .rekening-details {
+            flex-grow: 1;
+        }
+
+        .rekening-details h6 {
+            margin-bottom: 0.25rem;
+            font-weight: 600;
+        }
+
+        .rekening-details p {
+            margin-bottom: 0;
+            color: #555;
+        }
+
+        .btn-copy {
+            white-space: nowrap;
+            /* Mencegah teks tombol patah */
+        }
+
+        .payment-sidebar {
+            position: sticky;
+            top: 20px;
+            /* Jarak dari atas saat sticky */
+        }
+    </style>
+@endsection
+
 @section('content')
     <div class="page-title-box">
         <div class="container-fluid">
@@ -21,265 +116,218 @@
         @php
             function rupiah($angka)
             {
-                $hasil_rupiah = 'Rp ' . number_format($angka, 2, ',', '.');
-                return $hasil_rupiah;
+                return 'Rp ' . number_format($angka, 0, ',', '.');
             }
         @endphp
 
         <div class="page-content-wrapper">
-            <div class="row">
-                <div class="col-xl-8">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row">
-                                <h6 class="header-title">Daftar Rekening Pembayaran Produk</h6>
-                                @foreach ($rekening as $rekening)
-                                    <div class="col-md-3">
-                                        <div class="alert alert-secondary" role="alert">
-                                            <p style="text-align:center"><b>{{ Str::upper($rekening->nama_rek) }}</b></p>
-                                            <p style="text-align:center"><b>{{ Str::upper($rekening->no_rek) }}</b></p>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                            <h5 class="header-title">Informasi Tagihan</h5>
-                            <p class="card-title-desc">Informasi Tagihan Pembayaran Untuk Pembelian Produk</p>
-                            <hr>
-                            <p class="card-title-desc">Metode Pengiriman Produk</p>
-                            <div class="row">
-                                @foreach ($ongkir as $ongkir)
-                                    <div class="col-lg-4 col-sm-6">
-                                        <div class="card border rounded shipping-address">
-                                            <div class="card-body">
-                                                <img src="/annprint/jne.jpeg" width="60" height="60">
-                                                <div class="mb-1">
-                                                    <input class="form-check-input float-end" type="radio"
-                                                        name="alamat_kirim" value="" id="formRadios2"
-                                                        checked>{{ $ongkir['name'] }}
-                                                </div>
-                                                <p class="mb-1">Jenis Layanan :
-                                                    <b>{{ $ongkir['costs'][1]['description'] }}</b>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endforeach
-                                <div class="col-lg-8 col-sm-6">
-                                    <div class="card border rounded shipping-address">
-                                        <div class="card-body">
-                                            <h4 class="card-title font-size-16 mt-0">Lokasi Pengiriman : </h4>
-                                            <p class="card-text">
-                                                {{ Str::title($pesanan->alamat . ', ' . $pesanan->nama_kota . ' [ ' . $pesanan->nama_prov . ']') }}
-                                            </p>
-                                            <p class="card-text"><b>Penerima Produk</b></p>
-                                            <p class="card-text">Nama Penerima :
-                                                {{ Str::title($pesanan->nama_penerima . ' / ' . $pesanan->no_telp) }}</p>
-                                        </div>
-                                    </div>
+            <form action="{{ route('pesanan.update', $pesanan->id_pesanan) }}" method="post" enctype="multipart/form-data">
+                @csrf
+                @method('put')
+
+                <div class="row">
+                    {{-- KOLOM UTAMA UNTUK LANGKAH-LANGKAH --}}
+                    <div class="col-xl-8">
+
+                        <div class="card step-card">
+                            <div class="card-body">
+                                <div class="step-title">
+                                    <span class="step-number">1</span>
+                                    <h5 class="mb-0">Ringkasan Pesanan & Pengiriman</h5>
                                 </div>
-                            </div>
-                            <div class="table-responsive">
-                                <table class="table mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th class="border-top-0" style="width: 100px;" scope="col">Photo</th>
-                                            <th class="border-top-0" scope="col">Product</th>
-                                            <th class="border-top-0" scope="col">Harga</th>
-                                            <th class="border-top-0" scope="col">Total</th>
-                                        </tr>
-                                    </thead>
+
+                                <table class="table table-borderless rincian-table">
                                     <tbody>
                                         <tr>
-                                            <td><img src="/produk/{{ $pesanan->foto_produk1 }}" alt="product-img"
-                                                    title="product-img" class="avatar-md"></td>
                                             <td>
-                                                <h5 class="font-size-16 text-truncate"><a href="#"
-                                                        class="text-reset">{{ Str::upper($pesanan->nama_produk) }}</a></h5>
-                                                <p class="font-size-14 mb-0 text-muted">Jumlah Pesanan :
-                                                    {{ $pesanan->quantity }}</p>
-                                                <p class="font-size-14 mb-0 text-muted">Berat :
-                                                    {{ $pesanan->quantity * 145 }} Gram</p>
+                                                <div class="d-flex align-items-center">
+                                                    <img src="/produk/{{ $pesanan->foto_produk1 }}" alt="product-img"
+                                                        class="avatar-sm me-3 rounded">
+                                                    <div>
+                                                        <h6 class="mb-0">{{ Str::upper($pesanan->nama_produk) }}</h6>
+                                                        <small class="text-muted">Qty: {{ $pesanan->quantity }} pcs</small>
+                                                    </div>
+                                                </div>
                                             </td>
-                                            <td>
-                                                @if ($pesanan->quantity <= 11)
-                                                    @php
-                                                        $quantity = $pesanan->quantity;
-                                                        $harga = $pesanan->harga_produk1;
-                                                        echo rupiah($harga) . ' [6-11 pcs]';
-                                                    @endphp
-                                                @elseif ($pesanan->quantity <= 23)
-                                                    @php
-                                                        $quantity = $pesanan->quantity;
-                                                        $harga = $pesanan->harga_produk2;
-                                                        echo rupiah($harga) . ' [12-23 pcs]';
-                                                    @endphp
-                                                @elseif ($pesanan->quantity <= 50)
-                                                    @php
-                                                        $quantity = $pesanan->quantity;
-                                                        $harga = $pesanan->harga_produk3;
-                                                        echo rupiah($harga) . ' [24-50 pcs]';
-                                                    @endphp
-                                                @elseif ($pesanan->quantity <= 100)
-                                                    @php
-                                                        $quantity = $pesanan->quantity;
-                                                        $harga = $pesanan->harga_produk4;
-                                                        echo rupiah($harga) . ' [51-100 pcs]';
-                                                    @endphp
-                                                @elseif ($pesanan->quantity <= 200)
-                                                    @php
-                                                        $quantity = $pesanan->quantity;
-                                                        $harga = $pesanan->harga_produk5;
-                                                        echo rupiah($harga) . ' [101-200 pcs]';
-                                                    @endphp
-                                                @endif
-                                            </td>
-                                            <td>
-                                                @php
-                                                    echo rupiah($pesanan->bayar);
-                                                @endphp
-                                            </td>
+                                            <td class="item-price">{{ rupiah($pesanan->bayar) }}</td>
                                         </tr>
                                         @if (!empty($pesanan->variasi))
                                             <tr>
-                                                <td colspan="1">
-                                                </td>
-                                                <td>Variasi : {{ Str::title($pesanan->variasi) }}</td>
-                                                <td>
-                                                    Rp. {{ $pesanan->variasi_harga }}
-                                                </td>
-                                                <td>
-                                                    @php
-                                                        echo rupiah($pesanan->variasi_total);
-                                                    @endphp
-                                                </td>
+                                                <td class="item-name ps-5">Variasi: {{ Str::title($pesanan->variasi) }}</td>
+                                                <td class="item-price">{{ rupiah($pesanan->variasi_total) }}</td>
                                             </tr>
                                         @endif
                                         @if (!empty($pesanan->sablon))
                                             <tr>
-                                                <td colspan="1">
-                                                </td>
-                                                <td>Sablon : {{ Str::title($pesanan->sablon) }}</td>
-                                                <td> Rp. {{ $pesanan->sablon_harga }}</td>
-                                                <td>
-                                                    @php
-                                                        echo rupiah($pesanan->sablon_total);
-                                                    @endphp
-                                                </td>
+                                                <td class="item-name ps-5">Sablon: {{ Str::title($pesanan->sablon) }}</td>
+                                                <td class="item-price">{{ rupiah($pesanan->sablon_total) }}</td>
                                             </tr>
                                         @endif
                                         <tr>
-                                            <td colspan="1"></td>
-                                            <td>
-                                                <b>Biaya Pengiriman : [Jne-Reg]</b>
-                                            </td>
-                                            <td colspan="1">
-                                            </td>
-                                            <td>
-                                                @php
-                                                    echo rupiah($pesanan->ongkir);
-                                                @endphp
-                                            </td>
+                                            <td class="item-name">Biaya Pengiriman (JNE REG)</td>
+                                            <td class="item-price">{{ rupiah($pesanan->ongkir) }}</td>
                                         </tr>
-                                        <tr>
-                                            <td colspan="1">
-                                            </td>
-                                            <td colspan="1"></td>
-                                            <td>
-                                                <h6 class="m-0 text-end">Total Tagihan:</h6>
-                                            </td>
-                                            <td>
-                                                @php
-                                                    echo rupiah($pesanan->total_bayar);
-                                                @endphp
-                                            </td>
+                                        <tr class="rincian-total">
+                                            <td class="item-name text-end">Total Tagihan</td>
+                                            <td class="item-price">{{ rupiah($pesanan->total_bayar) }}</td>
                                         </tr>
-                                    </tbody><!-- end tbody -->
+                                    </tbody>
                                 </table>
+                                <hr>
+                                <h6><b>Alamat Pengiriman</b></h6>
+                                <p class="mb-1">{{ Str::title($pesanan->nama_penerima) }} ({{ $pesanan->no_telp }})</p>
+                                <p class="text-muted mb-0">
+                                    {{ Str::title($pesanan->alamat . ', ' . $pesanan->nama_kota . ' [ ' . $pesanan->nama_prov . ']') }}
+                                </p>
                             </div>
                         </div>
+
+                        <div class="card step-card">
+                            <div class="card-body">
+                                <div class="step-title">
+                                    <span class="step-number">2</span>
+                                    <h5 class="mb-0">Pilih Tujuan Transfer</h5>
+                                </div>
+
+                                {{-- KODE BARU YANG SUDAH DIPERBAIKI --}}
+                                @foreach ($rekening as $rek)
+                                    <div class="rekening-card">
+                                        {{-- Menggunakan helper asset() untuk menunjuk ke folder public/images/bank --}}
+                                        <img src="{{ asset('images/bank/' . $rek->logo) }}" alt="Logo {{ $rek->nama_rek }}">
+
+                                        <div class="rekening-details">
+                                            <h6>{{ Str::upper($rek->nama_rek) }}</h6>
+                                            <p>No. Rekening: <strong>{{ $rek->no_rek }}</strong></p>
+                                            {{-- Menampilkan data 'atas_nama' yang sudah kita simpan --}}
+                                            <p>Atas Nama {{ Str::title($rek->atas_nama) }}</p>
+                                        </div>
+                                        <button type="button" class="btn btn-outline-primary btn-sm btn-copy"
+                                            data-copy="{{ $rek->no_rek }}">
+                                            <i class="mdi mdi-content-copy me-1"></i> Salin No. Rek
+                                        </button>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <div class="card step-card">
+                            <div class="card-body">
+                                <div class="step-title">
+                                    <span class="step-number">3</span>
+                                    <h5 class="mb-0">Detail Desain (Opsional)</h5>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Upload File Desain</label>
+                                    <input type="file" name="desain" class="form-control">
+                                    @if (!empty($pesanan->desain))
+                                        <small class="text-muted mt-1 d-block">Desain sebelumnya: <span
+                                                class="text-primary">{{ $pesanan->desain }}</span></small>
+                                    @endif
+                                </div>
+                                <div>
+                                    <label class="form-label">Request / Catatan Desain</label>
+                                    <textarea name="request_desain" class="form-control" rows="4"
+                                        placeholder="Contoh: Logo di depan, tulisan di belakang.">{{ $pesanan->request_user }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
-                </div>
-                <div class="col-xl-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <form action="{{ route('pesanan.update', $pesanan->id_pesanan) }}" method="post"
-                                enctype="multipart/form-data">
-                                @csrf
-                                @method('put')
-                                <label class="form-label">Metode Pembayaran<span class="text-danger">*wajib</span></label>
-                                <div class="col-md-12 mb-2">
-                                    <select class="form-select @error('metode') is-invalid @enderror"
-                                        id="validationCustom03" name="metode">
-                                        <option value="">Pilih Metode Pembayaran</option>
-                                        <option value="lunas">
-                                            Lunas (
-                                            @php
-                                                echo rupiah($pesanan->total_bayar);
-                                            @endphp
-                                            )
-                                        </option>
-                                        <option value="dp">
-                                            DP 50% (
-                                            @php
-                                            $dp = $pesanan->total_bayar * 0.5;
-                                            echo rupiah($dp);
-                                            @endphp
-                                            )
-                                        </option>
+
+                    {{-- KOLOM SIDEBAR UNTUK AKSI PEMBAYARAN --}}
+                    <div class="col-xl-4">
+                        <div class="card payment-sidebar">
+                            <div class="card-body">
+                                <h5 class="card-title mb-3">Konfirmasi Pembayaran</h5>
+                                <div class="mb-3">
+                                    <label class="form-label">Metode Pembayaran<span class="text-danger">*</span></label>
+                                    <select class="form-select @error('metode') is-invalid @enderror" name="metode"
+                                        required>
+                                        <option value="" selected disabled>Pilih Jumlah Bayar</option>
+                                        <option value="lunas">Lunas ({{ rupiah($pesanan->total_bayar) }})</option>
+                                        <option value="dp">DP 25% ({{ rupiah($pesanan->total_bayar * 0.25) }})</option>
                                     </select>
                                     @error('metode')
                                         <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <input type="text" name="dp" value="{{ $dp }}" id="" hidden>
-                                <hr>
-                                <label class="form-label">Upload Bukti Pembayaran / DP <span
-                                        class="text-danger">*wajib</span></label>
-                                <div class="col-md-12 mb-2">
+
+                                <div class="mb-3">
+                                    <label class="form-label">Upload Bukti Pembayaran<span
+                                            class="text-danger">*</span></label>
                                     <input type="file" name="bukti_bayar"
                                         class="form-control @error('bukti_bayar') is-invalid @enderror" accept="image/*"
-                                        id="imgInp1">
+                                        id="imgInp1" required>
                                     @error('bukti_bayar')
                                         <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <div class="col-md-12">
-                                    <img id="output1" src="/morvin/dist/assets/images/upload.png" width="150px"
-                                        height="110px" />
+
+                                <div class="mb-4">
+                                    <img id="output1" src="/morvin/dist/assets/images/upload.png" class="img-fluid rounded"
+                                        style="width: 100%; max-height: 200px; object-fit: contain; border: 1px solid #ddd; padding: 5px;" />
                                 </div>
-                                <hr>
-                                <label class="form-label">Upload Desain <span class="text-danger">/ * Kosongkan Bila Tidak
-                                        Ada</span></label>
-                                <div class="col-md-12 mb-2">
-                                    <input type="file" name="desain" class="form-control">
+
+                                {{-- Input tersembunyi untuk nilai DP --}}
+                                <input type="hidden" name="dp" value="{{ $pesanan->total_bayar * 0.5 }}">
+
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary btn-lg w-100">
+                                        <i class="mdi mdi-send me-2"></i> Kirim Bukti Pembayaran
+                                    </button>
                                 </div>
-                                @if (!empty($pesanan->desain))
-                                    <span class="text-primary">Desain Lama : {{ $pesanan->desain }}</span>
-                                @endif
-                                <hr>
-                                <label class="form-label">Request Desain <span class="text-danger">/ * Kosongkan Bila
-                                        Tidak
-                                        Ada</span></label>
-                                <div class="col-md-12 mb-2">
-                                    <textarea name="request_desain" id="" cols="30" rows="5">{{ $pesanan->request_user }}</textarea>
-                                </div>
-                                <button type="submit" class="btn btn-primary w-100">Kirim Bukti Pembayaran</button>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 @endsection
 
 @section('js')
     <script>
+        // Script untuk image preview (sudah ada)
         imgInp1.onchange = evt => {
             const [file] = imgInp1.files
             if (file) {
                 output1.src = URL.createObjectURL(file)
             }
         }
+
+        // Script BARU untuk tombol salin nomor rekening
+        document.addEventListener('DOMContentLoaded', function () {
+            const copyButtons = document.querySelectorAll('.btn-copy');
+
+            copyButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const numberToCopy = this.getAttribute('data-copy');
+
+                    navigator.clipboard.writeText(numberToCopy).then(() => {
+                        // Feedback untuk user
+                        const originalText = this.innerHTML;
+                        this.innerHTML = 'Berhasil Disalin!';
+                        this.classList.remove('btn-outline-primary');
+                        this.classList.add('btn-success');
+
+                        setTimeout(() => {
+                            this.innerHTML = originalText;
+                            this.classList.remove('btn-success');
+                            this.classList.add('btn-outline-primary');
+                        }, 2000); // Kembali ke state semula setelah 2 detik
+                    }).catch(err => {
+                        console.error('Gagal menyalin: ', err);
+                        // Feedback error jika perlu
+                        const originalText = this.innerHTML;
+                        this.innerHTML = 'Gagal';
+                        this.classList.add('btn-danger');
+                        setTimeout(() => {
+                            this.innerHTML = originalText;
+                            this.classList.remove('btn-danger');
+                        }, 2000);
+                    });
+                });
+            });
+        });
     </script>
 @endsection

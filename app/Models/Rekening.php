@@ -10,6 +10,18 @@ class Rekening extends Model
     use HasFactory;
 
     protected $primaryKey = 'id_rekening';
-    protected $table='rekening';
-    protected $fillable = ['nama_rek', 'no_rek'];
+    protected $table = 'rekening';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    // GANTI BARIS LAMA ANDA DENGAN YANG INI
+    protected $fillable = [
+        'nama_rek',
+        'no_rek',
+        'atas_nama', // <-- IZINKAN KOLOM INI
+        'logo',      // <-- IZINKAN KOLOM INI
+    ];
 }

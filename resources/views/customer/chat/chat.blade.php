@@ -39,14 +39,13 @@
                                                     <i class="mdi mdi-circle text-success font-size-10"></i>
                                                 </div>
                                                 <div class="align-self-center me-3">
-                                                    <img src="/annprint/admin.jpg" class="rounded-circle avatar-sm"
-                                                        alt="">
+                                                    <img src="/annprint/admin.jpg" class="rounded-circle avatar-sm" alt="">
                                                 </div>
 
                                                 <div class="media-body overflow-hidden">
                                                     <h5 class="text-truncate font-size-14 mb-1">Admin
                                                     </h5>
-                                                    <p>Jam Kerja 08.00 - 16.00 WIB</p>
+                                                    <p>Jam Kerja 24 JAM</p>
                                                 </div>
                                             </div>
                                         </a>
@@ -72,22 +71,20 @@
                             <div class="chat-conversation p-3">
                                 <ul class="list-unstyled" data-simplebar style="max-height: 300px;">
                                     @foreach ($chat as $chat)
-                                        <li class="{{  $chat->from_id == Auth::user()->id ? '':'right' }}">
+                                        <li class="{{  $chat->from_id == Auth::user()->id ? '' : 'right' }}">
                                             <div class="conversation-list">
 
                                                 <div class="media">
 
                                                     @if ($chat->from_id == Auth::user()->id)
                                                         @if (Auth::user()->foto_profile == NULL)
-                                                        <img src="/annprint/default.jpg" class="rounded-circle avatar-xs"
-                                                        alt="">
+                                                            <img src="/annprint/default.jpg" class="rounded-circle avatar-xs" alt="">
                                                         @else
-                                                        <img src="/foto_profile/{{ Auth::user()->foto_profile }}"
-                                                            class="rounded-circle avatar-xs" alt="">
+                                                            <img src="/foto_profile/{{ Auth::user()->foto_profile }}"
+                                                                class="rounded-circle avatar-xs" alt="">
                                                         @endif
                                                     @else
-                                                    <img src="/annprint/admin.jpg" class="rounded-circle avatar-xs"
-                                                    alt="">
+                                                        <img src="/annprint/admin.jpg" class="rounded-circle avatar-xs" alt="">
                                                     @endif
                                                     <div class="media-body arrow-left ms-3">
 

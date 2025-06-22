@@ -30,12 +30,12 @@
                     </a>
                 </li>
 
-            
-              <li class="{{ request()->is('customer/produk_non/*') ? 'mm-active' : '' }}">
+
+                <!-- <li class="{{ request()->is('customer/produk_non/*') ? 'mm-active' : '' }}">
                     <a href="{{ Route('customer.produk_non') }}" class="waves-effect">
                         <i class="mdi mdi-tshirt-crew-outline"></i><span> Produk Non Grosir</span>
                     </a>
-                </li> 
+                </li>  -->
 
                 <li class="menu-title">Pesanan Saya</li>
                 @php
@@ -43,9 +43,9 @@
                         ->where('id_user', Auth::user()->id)
                         ->where(function ($query) {
                             $query->where('pesanan.status', 'Pesanan Di Terima')
-                        ->orWhere('pesanan.status', 'menunggu pembayaran')
-                        ->orWhere('pesanan.status', 'Bukti Pembayaraan Sedang Di Tinjau')
-                        ->orWhere('pesanan.status', 'Pesanan Di Tolak');
+                                ->orWhere('pesanan.status', 'menunggu pembayaran')
+                                ->orWhere('pesanan.status', 'Bukti Pembayaraan Sedang Di Tinjau')
+                                ->orWhere('pesanan.status', 'Pesanan Di Tolak');
                         })
                         ->get();
                 @endphp

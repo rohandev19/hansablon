@@ -12,16 +12,10 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('keranjang', function (Blueprint $table) {
-            $table->bigIncrements('id_keranjang');
-            $table->integer('id_user');
-            $table->integer('id_produk');
-            $table->integer('total');
+        Schema::table('keranjang', function (Blueprint $table) {
             $table->string('foto_produk1')->nullable();
             $table->string('nama_produk')->nullable();
-            $table->string('harga_produk')->nullable();
-            $table->enum('tipe_produk', ['produk', 'produknon'])->default('produk'); // Menambahkan tipe produk
-            $table->timestamps();
+            $table->string('harga_produk')->nullable();    //
         });
     }
 
@@ -32,6 +26,8 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('keranjang');
+        Schema::table('keranjang', function (Blueprint $table) {
+            $table->dropColumn(['foto_produk1', 'nama_produk', 'harga_produk']); //
+        });
     }
 };

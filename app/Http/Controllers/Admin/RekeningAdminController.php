@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Rekening;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File; // Tambahkan ini di bagian atas
 
 class RekeningAdminController extends Controller
 {
@@ -26,7 +27,7 @@ class RekeningAdminController extends Controller
      */
     public function create()
     {
-        //
+        // Biasanya tidak digunakan jika form ada di halaman index
     }
 
     /**
@@ -37,15 +38,31 @@ class RekeningAdminController extends Controller
      */
     public function store(Request $request)
     {
+        // 1. Validasi semua input dari form
         $request->validate([
-            'jenis_rekening'=>'required',
-            'no_rekening'=>'required'
+            'nama_rek' => 'required|string|max:255',
+            'no_rek' => 'required|numeric',
+            'atas_nama' => 'required|string|max:255',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048', // Logo boleh kosong, tapi jika ada harus gambar
         ]);
 
-        Rekening::create([
-            'nama_rek'=>$request->jenis_rekening,
-            'no_rek'=>$request->no_rekening,
-        ]);
+        // 2. Siapkan data untuk disimpan
+        $data = $request->only(['nama_rek', 'no_rek', 'atas_nama']);
+
+        // 3. Handle upload file logo jika ada
+        if ($request->hasFile('logo')) {
+            $file = $request->file('logo');
+            $nama_file = time() . "_" . $file->getClientOriginalName();
+
+            // Pindahkan file ke folder public/images/bank
+            $file->move(public_path('images/bank'), $nama_file);
+
+            // Simpan nama file ke dalam data
+            $data['logo'] = $nama_file;
+        }
+
+        // 4. Simpan data ke database
+        Rekening::create($data);
 
         return back()->with('success', 'Berhasil Menambahkan Rekening Baru');
     }
@@ -69,11 +86,9 @@ class RekeningAdminController extends Controller
      */
     public function edit($id)
     {
-        $edit_rek = Rekening::find($id);
-
+        $edit_rek = Rekening::findOrFail($id); // Gunakan findOrFail untuk keamanan
         $rekening = Rekening::latest()->paginate(4);
-
-        return view('admin.rekening.rekening_edit', compact(['edit_rek','rekening']));
+        return view('admin.rekening.rekening_edit', compact(['edit_rek', 'rekening']));
     }
 
     /**
@@ -85,17 +100,36 @@ class RekeningAdminController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // 1. Validasi semua input
         $request->validate([
-            'jenis_rekening'=>'required',
-            'no_rekening'=>'required'
+            'nama_rek' => 'required|string|max:255',
+            'no_rek' => 'required|numeric',
+            'atas_nama' => 'required|string|max:255',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
         ]);
 
-        Rekening::find($id)->update([
-            'nama_rek'=>$request->jenis_rekening,
-            'no_rek'=>$request->no_rekening,
-        ]);
+        // 2. Cari data rekening yang akan diupdate
+        $rekening = Rekening::findOrFail($id);
+        $data = $request->only(['nama_rek', 'no_rek', 'atas_nama']);
 
-        return to_route('rekening.index')->with('success', 'Berhasil Menambahkan Rekening Baru');
+        // 3. Handle upload logo baru jika ada
+        if ($request->hasFile('logo')) {
+            // Hapus logo lama jika ada
+            if ($rekening->logo && File::exists(public_path('images/bank/' . $rekening->logo))) {
+                File::delete(public_path('images/bank/' . $rekening->logo));
+            }
+
+            // Upload logo baru
+            $file = $request->file('logo');
+            $nama_file = time() . "_" . $file->getClientOriginalName();
+            $file->move(public_path('images/bank'), $nama_file);
+            $data['logo'] = $nama_file;
+        }
+
+        // 4. Update data di database
+        $rekening->update($data);
+
+        return to_route('rekening.index')->with('success', 'Berhasil Memperbarui Rekening');
     }
 
     /**
@@ -106,7 +140,15 @@ class RekeningAdminController extends Controller
      */
     public function destroy($id)
     {
-        Rekening::find($id)->delete();
+        $rekening = Rekening::findOrFail($id);
+
+        // Hapus file logo dari server jika ada
+        if ($rekening->logo && File::exists(public_path('images/bank/' . $rekening->logo))) {
+            File::delete(public_path('images/bank/' . $rekening->logo));
+        }
+
+        // Hapus data dari database
+        $rekening->delete();
 
         return back()->with('delete', 'Berhasil Menghapus Rekening');
     }
