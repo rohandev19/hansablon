@@ -1,7 +1,6 @@
 @extends('customer.layouts.master')
 
 @section('css')
-    {{-- CSS KUSTOM UNTUK TAMPILAN PEMBAYARAN BARU --}}
     <style>
         .step-card {
             margin-bottom: 1.5rem;
@@ -21,7 +20,6 @@
             height: 32px;
             border-radius: 50%;
             background-color: #556ee6;
-            /* Warna primer tema */
             color: #fff;
             font-weight: 600;
             margin-right: 12px;
@@ -84,13 +82,11 @@
 
         .btn-copy {
             white-space: nowrap;
-            /* Mencegah teks tombol patah */
         }
 
         .payment-sidebar {
             position: sticky;
             top: 20px;
-            /* Jarak dari atas saat sticky */
         }
     </style>
 @endsection
@@ -126,22 +122,22 @@
                 @method('put')
 
                 <div class="row">
-                    {{-- KOLOM UTAMA UNTUK LANGKAH-LANGKAH --}}
                     <div class="col-xl-8">
-
                         <div class="card step-card">
                             <div class="card-body">
                                 <div class="step-title">
                                     <span class="step-number">1</span>
                                     <h5 class="mb-0">Ringkasan Pesanan & Pengiriman</h5>
                                 </div>
-
                                 <table class="table table-borderless rincian-table">
                                     <tbody>
                                         <tr>
                                             <td>
                                                 <div class="d-flex align-items-center">
-                                                    <img src="/produk/{{ $pesanan->foto_produk1 }}" alt="product-img"
+                                                    {{-- IMG SRC SUDAH DIPERBAIKI DENGAN ASSET() --}}
+                                                    <img src="{{ asset('produk/' . $pesanan->foto_produk1) }}"
+                                                        alt="Foto Produk"
+                                                        onerror="this.onerror=null;this.src='{{ asset('images/default-product.png') }}';"
                                                         class="avatar-sm me-3 rounded">
                                                     <div>
                                                         <h6 class="mb-0">{{ Str::upper($pesanan->nama_produk) }}</h6>
@@ -188,17 +184,12 @@
                                     <span class="step-number">2</span>
                                     <h5 class="mb-0">Pilih Tujuan Transfer</h5>
                                 </div>
-
-                                {{-- KODE BARU YANG SUDAH DIPERBAIKI --}}
                                 @foreach ($rekening as $rek)
                                     <div class="rekening-card">
-                                        {{-- Menggunakan helper asset() untuk menunjuk ke folder public/images/bank --}}
                                         <img src="{{ asset('images/bank/' . $rek->logo) }}" alt="Logo {{ $rek->nama_rek }}">
-
                                         <div class="rekening-details">
                                             <h6>{{ Str::upper($rek->nama_rek) }}</h6>
                                             <p>No. Rekening: <strong>{{ $rek->no_rek }}</strong></p>
-                                            {{-- Menampilkan data 'atas_nama' yang sudah kita simpan --}}
                                             <p>Atas Nama {{ Str::title($rek->atas_nama) }}</p>
                                         </div>
                                         <button type="button" class="btn btn-outline-primary btn-sm btn-copy"
@@ -231,10 +222,8 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
 
-                    {{-- KOLOM SIDEBAR UNTUK AKSI PEMBAYARAN --}}
                     <div class="col-xl-4">
                         <div class="card payment-sidebar">
                             <div class="card-body">
@@ -245,7 +234,7 @@
                                         required>
                                         <option value="" selected disabled>Pilih Jumlah Bayar</option>
                                         <option value="lunas">Lunas ({{ rupiah($pesanan->total_bayar) }})</option>
-                                        <option value="dp">DP 25% ({{ rupiah($pesanan->total_bayar * 0.25) }})</option>
+                                        <option value="dp">DP 50% ({{ rupiah($pesanan->total_bayar * 0.5) }})</option>
                                     </select>
                                     @error('metode')
                                         <span class="invalid-feedback">{{ $message }}</span>
@@ -264,12 +253,9 @@
                                 </div>
 
                                 <div class="mb-4">
-                                    <img id="output1" src="/morvin/dist/assets/images/upload.png" class="img-fluid rounded"
+                                    <img id="output1" src="{{ asset('images/upload.png') }}" class="img-fluid rounded"
                                         style="width: 100%; max-height: 200px; object-fit: contain; border: 1px solid #ddd; padding: 5px;" />
                                 </div>
-
-                                {{-- Input tersembunyi untuk nilai DP --}}
-                                <input type="hidden" name="dp" value="{{ $pesanan->total_bayar * 0.5 }}">
 
                                 <div class="d-grid">
                                     <button type="submit" class="btn btn-primary btn-lg w-100">
@@ -287,7 +273,6 @@
 
 @section('js')
     <script>
-        // Script untuk image preview (sudah ada)
         imgInp1.onchange = evt => {
             const [file] = imgInp1.files
             if (file) {
@@ -295,36 +280,23 @@
             }
         }
 
-        // Script BARU untuk tombol salin nomor rekening
         document.addEventListener('DOMContentLoaded', function () {
             const copyButtons = document.querySelectorAll('.btn-copy');
-
             copyButtons.forEach(button => {
                 button.addEventListener('click', function () {
                     const numberToCopy = this.getAttribute('data-copy');
-
                     navigator.clipboard.writeText(numberToCopy).then(() => {
-                        // Feedback untuk user
                         const originalText = this.innerHTML;
                         this.innerHTML = 'Berhasil Disalin!';
                         this.classList.remove('btn-outline-primary');
                         this.classList.add('btn-success');
-
                         setTimeout(() => {
                             this.innerHTML = originalText;
                             this.classList.remove('btn-success');
                             this.classList.add('btn-outline-primary');
-                        }, 2000); // Kembali ke state semula setelah 2 detik
+                        }, 2000);
                     }).catch(err => {
                         console.error('Gagal menyalin: ', err);
-                        // Feedback error jika perlu
-                        const originalText = this.innerHTML;
-                        this.innerHTML = 'Gagal';
-                        this.classList.add('btn-danger');
-                        setTimeout(() => {
-                            this.innerHTML = originalText;
-                            this.classList.remove('btn-danger');
-                        }, 2000);
                     });
                 });
             });

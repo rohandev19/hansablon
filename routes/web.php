@@ -70,13 +70,15 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
 
     Route::resource('/admin/produk_non', ProduknonController::class);
 
+    // --- GRUP ROUTE PRODUK ---
     Route::resource('/admin/produk', ProdukController::class);
+    // INI ADALAH ROUTE BARU YANG DITAMBAHKAN
+    Route::post('/admin/produk/{produk}/tambah-stok', [ProdukController::class, 'tambahStok'])->name('produk.tambahStok');
+    // -------------------------
 
     Route::resource('/admin/kategori', KategoriProdukController::class);
 
     Route::resource('/admin/variasi', VariasiProdukController::class);
-
-    Route::resource('/admin/sablon', AplikasiSablonController::class);
 
     Route::resource('/admin/sablon', AplikasiSablonController::class);
 

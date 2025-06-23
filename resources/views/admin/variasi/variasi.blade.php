@@ -33,29 +33,24 @@
                             <form action="{{ Route('variasi.store') }}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 <div class="mb-3">
-                                    <input
-                                        class="form-control @error('variasi')
+                                    <input class="form-control @error('variasi')
                                         is-invalid
-                                    @enderror"
-                                        name="variasi" type="text" placeholder="Masukan Tipe Variasi"
+                                    @enderror" name="variasi" type="text" placeholder="Masukan Tipe Variasi"
                                         id="example-text-input">
                                     @error('variasi')
                                         <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="mb-3">
-                                    <input id="input-currency"
-                                        class="form-control input-mask text-left @error('harga_variasi')
-                                    is-invalid
-                                    @enderror"
-                                        name="harga_variasi"
+                                    <input id="input-currency" class="form-control input-mask text-left @error('harga_variasi')
+                                        is-invalid
+                                    @enderror" name="harga_variasi"
                                         data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'digits': 2, 'digitsOptional': false, 'prefix': 'Rp. ', 'placeholder': '0'">
                                     @error('harga_variasi')
                                         <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <button type="submit"
-                                    class="btn btn-success waves-effect waves-light w-100">Simpan</button>
+                                <button type="submit" class="btn btn-success waves-effect waves-light w-100">Simpan</button>
                             </form>
                         </div>
                     </div>
@@ -84,11 +79,11 @@
                                     </thead>
                                     <tbody>
                                         @php
-                                        function rupiah($angka)
-                                        {
-                                            $hasil_rupiah = 'Rp ' . number_format($angka, 2, ',', '.');
-                                            return $hasil_rupiah;
-                                        }
+                                            function rupiah($angka)
+                                            {
+                                                $hasil_rupiah = 'Rp ' . number_format($angka, 2, ',', '.');
+                                                return $hasil_rupiah;
+                                            }
                                         @endphp
                                         @foreach ($variasi as $data => $list)
                                             <tr>
@@ -103,13 +98,12 @@
                                                     <a href="{{ route('variasi.edit', $list->id_variasi) }}"
                                                         class="btn btn-warning waves-effect waves-light"><i
                                                             class="dripicons-pencil"></i> Edit</a>
-                                                    <form action="{{ route('variasi.destroy', $list->id_variasi) }}" method="POST"
-                                                        style="display:inline"
+                                                    <form action="{{ route('variasi.destroy', $list->id_variasi) }}"
+                                                        method="POST" style="display:inline"
                                                         onsubmit="return confirm('Apakah Yakin akan Di Hapus ?');">
                                                         @method('delete')
                                                         @csrf
-                                                        <button type="submit"
-                                                            class="btn btn-danger waves-effect waves-light"><i
+                                                        <button type="submit" class="btn btn-danger waves-effect waves-light"><i
                                                                 class="dripicons-trash"></i> Delete</button>
                                                     </form>
                                                 </td>
@@ -133,8 +127,8 @@
     <script src="/morvin/dist/assets/libs/inputmask/jquery.inputmask.min.js"></script>
 
     <script>
-        window.setTimeout(function() {
-            $(".alert").fadeTo(500, 0).slideUp(500, function() {
+        window.setTimeout(function () {
+            $(".alert").fadeTo(500, 0).slideUp(500, function () {
                 $(this).remove();
             });
         }, 2500);
