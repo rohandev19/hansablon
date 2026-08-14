@@ -22,7 +22,8 @@ class User extends Authenticatable
         'email',
         'password',
         'tipe',
-        'foto_profile'
+        'foto_profile',
+        'is_b2b'
     ];
 
     /**

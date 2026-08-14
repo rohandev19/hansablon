@@ -47,7 +47,7 @@
                                         @foreach ($produk as $data)
                                             <tr>
                                                 <td><b>{{ Str::upper($data->nama_produk) }}</b></td>
-                                                <td><i>{{ Str::upper($data->jenis_kategori) }}</i></td>
+                                                <td><i>{{ Str::upper($data->kategoriData->jenis_kategori ?? '') }}</i></td>
                                                 {{-- DATA STOK DITAMPILKAN --}}
                                                 <td>
                                                     <span class="badge bg-info p-2">{{ $data->stok }} pcs</span>

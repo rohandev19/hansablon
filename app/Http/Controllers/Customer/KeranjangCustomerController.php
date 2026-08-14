@@ -3,153 +3,114 @@
 namespace App\Http\Controllers\customer;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreKeranjangRequest;
+use App\Http\Requests\UpdateKeranjangRequest;
 use App\Models\Alamat;
 use App\Models\Keranjang;
-use App\Models\Produk; // 1. IMPORT MODEL PRODUK
+use App\Models\Produk;
 use App\Models\Sablon;
 use App\Models\Variasi;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class KeranjangCustomerController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): View
     {
-        $keranjang = Keranjang::join('produk', 'keranjang.id_produk', '=', 'produk.id_produk')
-            ->select('keranjang.*', 'produk.*')
-            ->where('keranjang.id_user', Auth::user()->id)
-            ->orderBy('keranjang.id_keranjang', 'desc')
+        // Eloquent Eager Loading instead of Join
+        $keranjang = Keranjang::with('produk')
+            ->where('id_user', Auth::id())
+            ->orderBy('id_keranjang', 'desc')
             ->paginate(10);
 
-        return view('customer.keranjang.keranjang', compact(['keranjang']));
-    }
-
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return view('customer.keranjang.keranjang', compact('keranjang'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreKeranjangRequest $request): RedirectResponse
     {
-        // =================================================================
-        // == AWAL BLOK VALIDASI STOK (KODE YANG DIPERBARUI) ==
-        // =================================================================
-
-        // 2. Validasi input dasar dari request
-        $request->validate([
-            'produk' => 'required|exists:produk,id_produk',
-            'demo0' => 'required|integer'
-        ]);
+        $jumlahBeli = $request->validated('demo0');
+        $produkId = $request->validated('produk');
         
-        $jumlahBeli = $request->demo0;
-
-        // 3. Ambil data produk dari database untuk cek stok
-        $produk = Produk::find($request->produk);
-
-        // 4. Lakukan semua validasi kuantitas
-        if ($jumlahBeli < 6) {
-            return back()->with('error', 'Maaf, pembelian produk minimal 6 pcs.');
-        }
-        
-        if ($jumlahBeli > 200) {
-            return back()->with('error', 'Maaf, pembelian produk maksimal 200 pcs per transaksi.');
-        }
+        $produk = Produk::findOrFail($produkId);
 
         if ($jumlahBeli > $produk->stok) {
             return back()->with('error', 'Maaf, jumlah pembelian melebihi stok yang tersedia (' . $produk->stok . ' pcs).');
         }
 
-        // 5. Jika semua validasi lolos, baru masukkan ke keranjang
+        // B2B Logic (Role & MOQ Showcase)
+        if ($produk->tipe_produk == 'grosir') {
+            if (!Auth::user()->is_b2b) {
+                return back()->with('error', 'Maaf, produk grosir hanya bisa dibeli oleh akun B2B/Reseller.');
+            }
+            if ($jumlahBeli < 6) { // MOQ for B2B is 6
+                return back()->with('error', 'Minimum Order Quantity (MOQ) untuk produk Grosir B2B adalah 6 pcs.');
+            }
+        }
+
         Keranjang::create([
-            'id_user' => Auth::user()->id,
-            'id_produk' => $request->produk,
+            'id_user' => Auth::id(),
+            'id_produk' => $produkId,
             'total' => $jumlahBeli,
         ]);
 
         return to_route('keranjang.index')->with('success', 'Produk berhasil ditambahkan ke keranjang!');
-        
-        // =================================================================
-        // == AKHIR BLOK VALIDASI STOK ==
-        // =================================================================
     }
 
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function nongrosir(Request $request)
-    {
-        // Jika Anda juga perlu validasi stok untuk produk non-grosir,
-        // terapkan logika yang sama seperti di method store() di atas.
-
-        Keranjang::create([
-            'id_user' => Auth::user()->id,
-            'id_produk' => $request->id_produknon,
-            'total' => $request->demo0,
-        ]);
-
-
-        return to_route('keranjang.index');
-    }
 
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(int $id): View
     {
-        $id = $id;
-
-        $alamat = Alamat::where('id_user', Auth::user()->id)
+        $alamat = Alamat::where('id_user', Auth::id())
             ->orderBy('id_user_alamat', 'DESC')
             ->get();
 
-        $keranjang = Keranjang::join('produk', 'keranjang.id_produk', '=', 'produk.id_produk')
-            ->select('keranjang.*', 'produk.*')
-            ->where('keranjang.id_keranjang', $id)
-            ->get();
+        // SECURITY FIRST: Object-Level Authorization (IDOR Prevention)
+        $keranjangItem = Keranjang::with('produk')
+            ->where('id_user', Auth::id())
+            ->findOrFail($id);
+            
+        // We wrap it in a collection because the original blade view expects a collection
+        $keranjang = collect([$keranjangItem]);
 
         $variasi = Variasi::get();
-
         $sablon = Sablon::get();
 
         return view('customer.checkout.checkout', compact(['alamat', 'id', 'keranjang', 'variasi', 'sablon']));
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(UpdateKeranjangRequest $request, int $id): RedirectResponse
     {
-        // Anda juga bisa menambahkan validasi stok di sini saat customer mengubah jumlah di keranjang
-        $request->validate(['pembelian' => 'required|integer|min:6']);
+        // SECURITY FIRST: Object-Level Authorization (IDOR Prevention)
+        $keranjang = Keranjang::where('id_user', Auth::id())->findOrFail($id);
         
-        $keranjang = Keranjang::findOrFail($id);
         $produk = Produk::find($keranjang->id_produk);
 
-        if($request->pembelian > $produk->stok) {
+        $pembelian = $request->validated('pembelian');
+
+        if($produk && $pembelian > $produk->stok) {
             return back()->with('error', 'Gagal! Jumlah melebihi stok yang tersedia (' . $produk->stok . ' pcs).');
         }
 
+        if ($produk->tipe_produk == 'grosir' && $pembelian < 6) {
+            return back()->with('error', 'Minimum Order Quantity (MOQ) untuk produk Grosir B2B adalah 6 pcs.');
+        }
+
         $keranjang->update([
-            'total' => $request->pembelian
+            'total' => $pembelian
         ]);
 
         return back()->with('success', 'Berhasil memperbaharui jumlah pembelian.');
@@ -158,9 +119,11 @@ class KeranjangCustomerController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(int $id): RedirectResponse
     {
-        Keranjang::where('id_keranjang', $id)->delete();
+        // SECURITY FIRST: Object-Level Authorization (IDOR Prevention)
+        $keranjang = Keranjang::where('id_user', Auth::id())->findOrFail($id);
+        $keranjang->delete();
 
         return to_route('keranjang.index')->with('success', 'Berhasil Menghapus Keranjang');
     }

@@ -80,13 +80,13 @@
 
                                         <div class="text-center mt-2">
 
-                                            <a href="{{ route('customer.detail_non_grosir', ['id_produk' => $produks->id_produknon]) }}" class="text-dark">
+                                            <a href="{{ route('customer.detail_non_grosir', ['id_produk' => $produks->id_produk]) }}" class="text-dark">
                                                 <h5 class="font-size-18">{{ Str::title($produks->nama_produk) }}</h5>
                                             </a>
 
                                             <h5 class="mt-3 mb-0">
                                                 @php
-                                                    echo rupiah($produks->harga_produk);
+                                                    echo rupiah($produks->harga_eceran);
                                                 @endphp</h5>
                                         </div>
                                     </div>

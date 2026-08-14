@@ -58,12 +58,12 @@
                                             @forelse ($keranjang as $item)
                                                 <tr>
                                                     <td>
-                                                        <img src="/produk/{{ $item->foto_produk1 }}" alt="product-img"
+                                                        <img src="/produk/{{ $item->produk->foto_produk1 ?? '' }}" alt="product-img"
                                                             title="product-img" class="avatar-md" />
                                                     </td>
                                                     <td>
                                                         <h5 class="font-size-14 text-truncate">
-                                                            <a href="{{ route('customer.detail_produk', $item->id_produk) }}" class="text-reset">{{ Str::upper($item->nama_produk) }}</a>
+                                                            <a href="{{ route('customer.detail_produk', $item->id_produk) }}" class="text-reset">{{ Str::upper($item->produk->nama_produk ?? 'Unknown') }}</a>
                                                         </h5>
                                                         <p class="mb-0">Color : <span class="font-weight-medium">All Variant</span></p>
                                                     </td>
@@ -71,15 +71,15 @@
                                                         @php
                                                             $hargaSatuan = 0;
                                                             if ($item->total <= 11) {
-                                                                $hargaSatuan = $item->harga_produk1;
+                                                                $hargaSatuan = $item->produk->harga_produk1 ?? 0;
                                                             } elseif ($item->total <= 23) {
-                                                                $hargaSatuan = $item->harga_produk2;
+                                                                $hargaSatuan = $item->produk->harga_produk2 ?? 0;
                                                             } elseif ($item->total <= 50) {
-                                                                $hargaSatuan = $item->harga_produk3;
+                                                                $hargaSatuan = $item->produk->harga_produk3 ?? 0;
                                                             } elseif ($item->total <= 100) {
-                                                                $hargaSatuan = $item->harga_produk4;
+                                                                $hargaSatuan = $item->produk->harga_produk4 ?? 0;
                                                             } else {
-                                                                $hargaSatuan = $item->harga_produk5;
+                                                                $hargaSatuan = $item->produk->harga_produk5 ?? 0;
                                                             }
                                                             echo formatRupiah($hargaSatuan);
                                                         @endphp
@@ -94,7 +94,7 @@
                                                                 <input data-toggle="touchspin" type="text" name="pembelian"
                                                                     value="{{ $item->total }}"
                                                                     data-bts-min="6"
-                                                                    data-bts-max="{{ min(200, $item->stok) }}"
+                                                                    data-bts-max="{{ min(200, $item->produk->stok ?? 0) }}"
                                                                     data-bts-button-down-class="btn btn-default"
                                                                     data-bts-button-up-class="btn btn-default"
                                                                     >

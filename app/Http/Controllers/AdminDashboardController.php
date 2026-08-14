@@ -9,30 +9,33 @@ class AdminDashboardController extends Controller
 {
     public function index()
     {
-        $transaksi = Pesanan::join('produk', 'produk.id_produk', '=', 'pesanan.id_produk')
-        ->join('user_alamat', 'user_alamat.id_user_alamat', '=', 'pesanan.id_alamat')
-        ->select('pesanan.*', 'produk.nama_produk', 'user_alamat.nama_prov', 'user_alamat.nama_kota')
-        ->where('pesanan.status', 'selesai')
-        ->orderBy('pesanan.updated_at', 'desc')
-        ->limit(10)
-        ->get();
+        // Eloquent Eager Loading instead of manual joins
+        $transaksi = Pesanan::with(['produk', 'alamat'])
+            ->where('status', 'selesai')
+            ->orderBy('updated_at', 'desc')
+            ->limit(10)
+            ->get();
 
-        return view('admin.dashboard', compact(['transaksi']));
+        // Data Mockup untuk Chart.js (Showcase B2B/B2C Portfolio)
+        $chartData = [
+            'labels' => ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
+            'sales' => [1200000, 1900000, 3000000, 5000000, 2500000, 3200000, 4100000],
+            'b2b_b2c' => [65, 35], // 65% B2B, 35% B2C
+        ];
+
+        return view('admin.dashboard', compact(['transaksi', 'chartData']));
     }
 
     public function laporan(Request $request)
     {
-        $laporan = Pesanan::join('produk', 'produk.id_produk', '=', 'pesanan.id_produk')
-        ->join('user_alamat', 'user_alamat.id_user_alamat', '=', 'pesanan.id_alamat')
-        ->select('pesanan.*','produk.nama_produk', 'user_alamat.nama_prov', 'user_alamat.nama_kota')
-        // ->where('pesanan.status', 'selesai')
-        // ->orWhere('pesanan.status', 'Barang Dalam Pengiriman')
-        ->whereBetween('pesanan.updated_at', [$request->date_start, $request->date_end])
-        ->where(function($query) {
-            $query->where('pesanan.status', 'selesai')
-                  ->orWhere('pesanan.status', 'Barang Dalam Pengiriman');
-        })
-        ->get();
+        // Eloquent Eager Loading
+        $laporan = Pesanan::with(['produk', 'alamat'])
+            ->whereBetween('updated_at', [$request->date_start, $request->date_end])
+            ->where(function($query) {
+                $query->where('status', 'selesai')
+                      ->orWhere('status', 'Barang Dalam Pengiriman');
+            })
+            ->get();
 
         return view('admin.laporan.laporan', compact(['laporan']));
     }

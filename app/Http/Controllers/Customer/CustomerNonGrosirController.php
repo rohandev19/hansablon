@@ -5,25 +5,26 @@ namespace App\Http\Controllers\Customer;
 use App\Http\Controllers\Controller;
 use App\Models\Kategori;
 use App\Models\Komentar;
-use App\Models\ProdukNon;
+use App\Models\Produk;
 use Illuminate\Http\Request;
 
 class CustomerNonGrosirController extends Controller
 {
     public function index()
     {
-        $produk = ProdukNon::latest()->paginate(9);
+        $produk = Produk::where('tipe_produk', 'eceran')->latest()->paginate(9);
         $kategori = Kategori::orderBy('jenis_kategori', 'asc')->get();
         return view('customer.produknongrosir.produk_non_grosir', compact('produk', 'kategori'));
     }
 
     public function detail_produk($id)
     {
-        $produk = ProdukNon::join('kategori', 'produknon.kategori', '=', 'kategori.id_kategori')
-            ->select('produknon.*', 'kategori.jenis_kategori')
+        $produk = Produk::join('kategori', 'produk.kategori', '=', 'kategori.id_kategori')
+            ->select('produk.*', 'kategori.jenis_kategori')
+            ->where('tipe_produk', 'eceran')
             ->find($id);
 
-        $komentar = Komentar::join('produknon', 'produknon.id_produknon', '=', 'komentar.id_produk')
+        $komentar = Komentar::join('produk', 'produk.id_produk', '=', 'komentar.id_produk')
             ->join('users', 'users.id', '=', 'komentar.id_user')
             ->select('users.nama', 'komentar.*')
             ->where('komentar.id_produk', $id)
@@ -36,7 +37,7 @@ class CustomerNonGrosirController extends Controller
 
     public function kategori_produk($id)
     {
-        $produk = ProdukNon::where('kategori', $id)->paginate(9);
+        $produk = Produk::where('tipe_produk', 'eceran')->where('kategori', $id)->paginate(9);
         $kategori = Kategori::orderBy('jenis_kategori', 'asc')->get();
         return view('customer.produknongrosir.kategori_produk_non_grosir', compact('produk', 'kategori', 'id'));
     }

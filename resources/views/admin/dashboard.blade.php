@@ -122,14 +122,21 @@
             </div>
 
             <div class="row">
-                <div class="col-xl-12">
+                <div class="col-xl-6">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="header-title mb-4">Produk Terjual</h4>
-                            <canvas id="myChart" width="100" height="30"></canvas>
+                            <h4 class="header-title mb-4">Tren Penjualan (7 Hari Terakhir)</h4>
+                            <canvas id="salesChart" height="150"></canvas>
                         </div>
                     </div>
-                    <!--end card-->
+                </div>
+                <div class="col-xl-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="header-title mb-4">Komposisi Transaksi (B2B vs B2C)</h4>
+                            <canvas id="b2bChart" height="150"></canvas>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -153,59 +160,55 @@
         <script src="/Chart.js/Chart.bundle.js"></script>
 
         <script>
-            var ctx = document.getElementById("myChart");
-            var myChart = new Chart(ctx, {
-                type: 'bar',
+            // Data dari Controller
+            const labels = {!! json_encode($chartData['labels']) !!};
+            const salesData = {!! json_encode($chartData['sales']) !!};
+            const b2bData = {!! json_encode($chartData['b2b_b2c']) !!};
+
+            // Sales Chart (Line)
+            var ctxSales = document.getElementById("salesChart").getContext('2d');
+            new Chart(ctxSales, {
+                type: 'line',
                 data: {
-                    @php
-                        $data_produk = DB::table('pesanan')
-                        ->join('produk','produk.id_produk','=','pesanan.id_produk')
-                        ->select('pesanan.*','produk.nama_produk')
-                        ->where('pesanan.status','selesai')
-                        ->orWhere('pesanan.status','Barang Dalam Pengiriman')
-                        ->get();
-                    @endphp
-                    labels: [
-                        @php
-                            foreach($data_produk as $data){
-                                echo "'".$data->nama_produk."',";
-                            };
-                        @endphp
-                    ],
+                    labels: labels,
                     datasets: [{
-                        label: 'Produk',
-                        data: [
-                            @php
-                            foreach($data_produk as $data2){
-                                echo $data2->quantity.",";
-                            };
-                        @endphp
-                        ],
-                        backgroundColor: [
-                            @php
-                            foreach($data_produk as $data){
-                                echo "'rgba(52, 76, 235, 1)',";
-                            };
-                            @endphp
-                        ],
-                        borderColor: [
-                            @php
-                            foreach($data_produk as $data){
-                                echo "'rgba(52, 76, 235, 1)',";
-                            };
-                            @endphp
-                        ],
-                        borderWidth: 1
+                        label: 'Pendapatan (Rp)',
+                        data: salesData,
+                        backgroundColor: 'rgba(52, 152, 219, 0.2)',
+                        borderColor: 'rgba(52, 152, 219, 1)',
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgba(52, 152, 219, 1)',
+                        fill: true
                     }]
                 },
                 options: {
+                    responsive: true,
                     scales: {
                         yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            }
+                            ticks: { beginAtZero: true }
                         }]
                     }
+                }
+            });
+
+            // B2B vs B2C Chart (Doughnut)
+            var ctxB2b = document.getElementById("b2bChart").getContext('2d');
+            new Chart(ctxB2b, {
+                type: 'doughnut',
+                data: {
+                    labels: ['B2B (Reseller/Grosir)', 'B2C (Eceran)'],
+                    datasets: [{
+                        data: b2bData,
+                        backgroundColor: [
+                            'rgba(46, 204, 113, 1)',
+                            'rgba(241, 196, 15, 1)'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    cutoutPercentage: 70
                 }
             });
         </script>

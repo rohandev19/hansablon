@@ -35,28 +35,28 @@
                                 <img src="/produk/{{ $detail->foto_produk1 }}" alt="" />
                                 <a class="view-full-screen" href="/produk/{{ $detail->foto_produk1 }}"
                                     data-lightbox="roadtrip" data-title="{{ $detail->nama_produk }}">
-                                    <i class="zmdi zmdi-zoom-in"></i>
+                                    <i class="fas fa-search-plus"></i>
                                 </a>
                             </div>
                             <div>
                                 <img src="/produk/{{ $detail->foto_produk2 }}" alt="" />
                                 <a class="view-full-screen" href="/produk/{{ $detail->foto_produk2 }}"
                                     data-lightbox="roadtrip" data-title="{{ $detail->nama_produk }}">
-                                    <i class="zmdi zmdi-zoom-in"></i>
+                                    <i class="fas fa-search-plus"></i>
                                 </a>
                             </div>
                             <div>
                                 <img src="/produk/{{ $detail->foto_produk3 }}" alt="" />
                                 <a class="view-full-screen" href="/produk/{{ $detail->foto_produk3 }}"
                                     data-lightbox="roadtrip" data-title="{{ $detail->nama_produk }}">
-                                    <i class="zmdi zmdi-zoom-in"></i>
+                                    <i class="fas fa-search-plus"></i>
                                 </a>
                             </div>
                             <div>
                                 <img src="/produk/{{ $detail->foto_produk4 }}" alt="" />
                                 <a class="view-full-screen" href="/produk/{{ $detail->foto_produk4 }}"
                                     data-lightbox="roadtrip" data-title="{{ $detail->nama_produk }}">
-                                    <i class="zmdi zmdi-zoom-in"></i>
+                                    <i class="fas fa-search-plus"></i>
                                 </a>
                             </div>
                         </div>
@@ -77,11 +77,11 @@
                             @endphp
                             <div class="fix mb-20">
                                 <span class="pro-price">
-                                    @if ($detail->harga_produk == null)
+                                    @if ($detail->harga_eceran == null)
                                         {{ 'Harga Tidak Tersedia' }}
                                     @else
                                         @php
-                                            echo rupiah($detail->harga_produk);
+                                            echo rupiah($detail->harga_eceran);
                                         @endphp
                                     @endif
                                 </span>
@@ -192,8 +192,8 @@
                                                             <p class="reply-date">27 Jun, 2021 at 2:30pm</p>
                                                         </div>
                                                         <div class="comment-reply floatright">
-                                                            <a href="#"><i class="zmdi zmdi-mail-reply"></i></a>
-                                                            <a href="#"><i class="zmdi zmdi-close"></i></a>
+                                                            <a href="#"><i class="fas fa-reply"></i></a>
+                                                            <a href="#"><i class="fas fa-times"></i></a>
                                                         </div>
                                                     </div>
                                                     <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing
@@ -214,8 +214,8 @@
                                                             <p class="reply-date">27 Jun, 2021 at 2:30pm</p>
                                                         </div>
                                                         <div class="comment-reply floatright">
-                                                            <a href="#"><i class="zmdi zmdi-mail-reply"></i></a>
-                                                            <a href="#"><i class="zmdi zmdi-close"></i></a>
+                                                            <a href="#"><i class="fas fa-reply"></i></a>
+                                                            <a href="#"><i class="fas fa-times"></i></a>
                                                         </div>
                                                     </div>
                                                     <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing

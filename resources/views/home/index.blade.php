@@ -5,16 +5,7 @@
     <div class="sidebar-social d-none d-md-block">
         <div class="table">
             <div class="table-cell">
-                <!-- <ul> -->
-                    <!-- <li><a href="#" target="_blank" title="Google Plus"><i -->
-                                <!-- class="zmdi zmdi-google-plus"></i></a></li> -->
-                    <!-- <li><a href="#" target="_blank" title="Twitter"><i -->
-                                <!-- class="zmdi zmdi-twitter"></i></a></li> -->
-                    <!-- <li><a href="#" target="_blank" title="Facebook"><i -->
-                                <!-- class="zmdi zmdi-facebook"></i></a></li> -->
-                    <!-- <li><a href="#" target="_blank" title="Linkedin"><i -->
-                                <!-- class="zmdi zmdi-linkedin"></i></a></li> -->
-                <!-- </ul> -->
+         
             </div>
         </div>
     </div>
@@ -100,24 +91,9 @@
         <div class="table">
             <div class="table-cell">
                 <ul>
-                    <!-- <li><a class="search-open" href="#" title="Search"><i -->
-                                <!-- class="zmdi zmdi-search"></i></a></li> -->
-                   <!-- <li><a href="#" title="Login"><i class="zmdi zmdi-lock"></i></a>
-                        <div class="customer-login text-left">
-                            <form action="#">
-                                <h4 class="title-1 title-border text-uppercase mb-30">Registered customers</h4>
-                                <p class="text-gray">If you have an account with us, Please login!</p>
-                                <input type="text" name="email" placeholder="Email here..." />
-                                <input type="password" placeholder="Password" />
-                                <p><a class="text-gray" href="#">Forget your password?</a></p>
-                                <button class="button-one submit-button mt-15" data-text="login"
-                                    type="submit">login</button>
-                            </form>
-                        </div>
-                    </li> -->
-                    <!-- <li><a href="my-account.html" title="My-Account"><i class="zmdi zmdi-account"></i></a> -->
+                  
                     </li>
-                    <!-- <li><a href="wishlist.html" title="Wishlist"><i class="zmdi zmdi-favorite"></i></a></li> -->
+                    <!-- <li><a href="wishlist.html" title="Wishlist"><i class="fas fa-heart"></i></a></li> -->
                 </ul>
             </div>
         </div>
@@ -133,11 +109,11 @@
                 <div class="row">
                     <div class="col-md-8 offset-md-2 p-0">
                         <div class="search-form-wrap">
-                            <button class="close-search"><i class="zmdi zmdi-close"></i></button>
+                            <button class="close-search"><i class="fas fa-times"></i></button>
                             <form action="#">
                                 <input type="text" placeholder="Search here..." />
                                 <button class="search-button" type="submit">
-                                    <i class="zmdi zmdi-search"></i>
+                                    <i class="fas fa-search"></i>
                                 </button>
                             </form>
                         </div>
@@ -180,15 +156,19 @@
                                 <div class="fix">
                                     <span class="pro-price floatleft">
                                         @php
-                                            echo rupiah($produk->harga_produk1);
+                                            if(Auth::check() && Auth::user()->is_b2b && $produk->tipe_produk == 'grosir') {
+                                                echo rupiah($produk->harga_produk1) . ' <span class="badge badge-success text-xs" style="font-size:9px;">B2B</span>';
+                                            } else {
+                                                echo rupiah($produk->harga_eceran);
+                                            }
                                         @endphp
                                     </span>
                                     <span class="pro-rating floatright">
-                                        <a href="#"><i class="zmdi zmdi-star"></i></a>
-                                        <a href="#"><i class="zmdi zmdi-star"></i></a>
-                                        <a href="#"><i class="zmdi zmdi-star"></i></a>
-                                        <a href="#"><i class="zmdi zmdi-star"></i></a>
-                                        <a href="#"><i class="zmdi zmdi-star"></i></a>
+                                        <a href="#"><i class="fas fa-star"></i></a>
+                                        <a href="#"><i class="fas fa-star"></i></a>
+                                        <a href="#"><i class="fas fa-star"></i></a>
+                                        <a href="#"><i class="fas fa-star"></i></a>
+                                        <a href="#"><i class="fas fa-star"></i></a>
                                     </span>
                                 </div>
                             </div>

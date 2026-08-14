@@ -4,7 +4,7 @@
         <div class="d-flex justify-content-between align-items-center">
             <strong class="fs-5 text-dark">Menu</strong>
             <button class="btn btn-sm btn-outline-secondary" onclick="toggleMobileMenu()">
-                <i class="zmdi zmdi-close"></i>
+                <i class="fas fa-times"></i>
             </button>
         </div>
     </div>
@@ -12,22 +12,22 @@
         <ul class="list-unstyled mt-3">
             <li class="mb-3">
                 <a href="/" class="d-flex align-items-center gap-2 text-dark fw-semibold">
-                    <i class="zmdi zmdi-home"></i> Home
+                    <i class="fas fa-home"></i> Home
                 </a>
             </li>
             {{-- <li class="mb-3">
                 <a href="{{ Route('produk_non') }}" class="d-flex align-items-center gap-2 text-dark fw-semibold">
-                    <i class="zmdi zmdi-store"></i> Produk (Satuan)
+                    <i class="fas fa-store"></i> Produk (Satuan)
                 </a>
             </li> --}}
             <li class="mb-3">
                 <a href="{{ route('produk') }}" class="d-flex align-items-center gap-2 text-dark fw-semibold">
-                    <i class="zmdi zmdi-shopping-cart"></i> Produk
+                    <i class="fas fa-shopping-cart"></i> Produk
                 </a>
             </li>
             <li>
                 <a href="{{ route('contact') }}" class="d-flex align-items-center gap-2 text-dark fw-semibold">
-                    <i class="zmdi zmdi-email"></i> Contact Us
+                    <i class="fas fa-envelope"></i> Contact Us
                 </a>
             </li>
         </ul>
@@ -36,7 +36,7 @@
 
 <!-- Toggle Button (for example placed in header) -->
 <button class="btn btn-warning d-md-none position-fixed top-0 start-0 m-3 z-1055" onclick="toggleMobileMenu()" style="z-index:1055;">
-    <i class="zmdi zmdi-menu"></i>
+    <i class="fas fa-bars"></i>
 </button>
 
 <!-- JavaScript to toggle menu -->

@@ -15,7 +15,9 @@ return new class extends Migration {
         Schema::create('produk', function (Blueprint $table) {
             $table->bigIncrements('id_produk');
             $table->string('nama_produk');
+            $table->enum('tipe_produk', ['grosir', 'eceran'])->default('grosir');
             $table->integer('kategori');
+            $table->string('harga_eceran')->nullable();
             $table->string('harga_produk1')->nullable();
             $table->string('harga_produk2')->nullable();
             $table->string('harga_produk3')->nullable();

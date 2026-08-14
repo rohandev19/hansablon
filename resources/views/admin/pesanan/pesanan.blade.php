@@ -100,7 +100,7 @@
                                                                 class="text-dark fw-bold">#P00{{ $konfirmasi->id_pesanan }}</a>
                                                         </td>
                                                         <td>
-                                                            {{ Str::title($konfirmasi->nama_produk) }}
+                                                            {{ Str::title($konfirmasi->produk->nama_produk) }}
                                                         </td>
                                                         <td style="text-align: center">
                                                             {{ $konfirmasi->quantity }} Pcs
@@ -136,7 +136,7 @@
                                                                     <dl class="row mb-0">
                                                                         <dt class="col-sm-4">Nama Produk</dt>
                                                                         <dd class="col-sm-8">
-                                                                            {{ Str::title($konfirmasi->nama_produk) }}
+                                                                            {{ Str::title($konfirmasi->produk->nama_produk) }}
                                                                         </dd>
                                                                         <dt class="col-sm-4">Total Pesanan</dt>
                                                                         <dd class="col-sm-8">{{ $konfirmasi->quantity }}
@@ -153,7 +153,7 @@
                                                                         <dd class="col-sm-8">{{ $konfirmasi->sablon }}</dd>
                                                                         <dt class="col-sm-4">Ongkir </dt>
                                                                         <dd class="col-sm-8">@php
-                                                                            echo rupiah($konfirmasi->ongkir) . ' [ ' . $konfirmasi->nama_kota . ' ]';
+                                                                            echo rupiah($konfirmasi->ongkir) . ' [ ' . $konfirmasi->alamat->nama_kota . ' ]';
                                                                         @endphp</dd>
                                                                         <dt class="col-sm-4">Total Tagihan </dt>
                                                                         <dd class="col-sm-8">@php
@@ -197,10 +197,10 @@
                                                                 class="text-dark fw-bold">#P00{{ $ongoing->id_pesanan }}</a>
                                                         </td>
                                                         <td>
-                                                            {{ Str::title($ongoing->nama_produk) }}
+                                                            {{ Str::title($ongoing->produk->nama_produk) }}
                                                         </td>
                                                         <td style="text-align: center" class="text-dark fw-bold">
-                                                            {{ Str::title($ongoing->nama) }}
+                                                            {{ Str::title($ongoing->user->nama) }}
                                                         </td>
                                                         <td style="text-align: center">
                                                             <a href="" data-bs-toggle="modal"
@@ -288,7 +288,7 @@
                                                                 class="text-dark fw-bold">#P00{{ $kirim->id_pesanan }}</a>
                                                         </td>
                                                         <td>
-                                                            {{ Str::title($kirim->nama_produk) . ' [ Quantity : ' . $kirim->quantity . ' ] ' }}
+                                                            {{ Str::title($kirim->produk->nama_produk) . ' [ Quantity : ' . $kirim->quantity . ' ] ' }}
                                                         </td>
                                                         <td style="text-align: center">
                                                             {{ $kirim->updated_at }}
@@ -357,7 +357,7 @@
                                                                 class="text-dark fw-bold">#P00{{ $konfirmasi_dp->id_pesanan }}</a>
                                                         </td>
                                                         <td>
-                                                            {{ Str::title($konfirmasi_dp->nama_produk) }}
+                                                            {{ Str::title($konfirmasi_dp->produk->nama_produk) }}
                                                         </td>
                                                         <td style="text-align: center">
                                                             {{ $konfirmasi_dp->quantity }} Pcs
@@ -399,7 +399,7 @@
                                                                     <dl class="row mb-0">
                                                                         <dt class="col-sm-4">Nama Produk</dt>
                                                                         <dd class="col-sm-8">
-                                                                            {{ Str::title($konfirmasi_dp->nama_produk) }}
+                                                                            {{ Str::title($konfirmasi_dp->produk->nama_produk) }}
                                                                         </dd>
                                                                         <dt class="col-sm-4">Total Pesanan</dt>
                                                                         <dd class="col-sm-8">
@@ -418,7 +418,7 @@
                                                                         </dd>
                                                                         <dt class="col-sm-4">Ongkir </dt>
                                                                         <dd class="col-sm-8">@php
-                                                                            echo rupiah($konfirmasi_dp->ongkir) . ' [ ' . $konfirmasi_dp->nama_kota . ' ]';
+                                                                            echo rupiah($konfirmasi_dp->ongkir) . ' [ ' . $konfirmasi_dp->alamat->nama_kota . ' ]';
                                                                         @endphp</dd>
                                                                         <dt class="col-sm-4">Total Tagihan</dt>
                                                                         <dd class="col-sm-8">
@@ -469,10 +469,10 @@
                                                                 class="text-dark fw-bold">#P00{{ $ongoing_dp->id_pesanan }}</a>
                                                         </td>
                                                         <td>
-                                                            {{ Str::title($ongoing_dp->nama_produk) }}
+                                                            {{ Str::title($ongoing_dp->produk->nama_produk) }}
                                                         </td>
                                                         {{-- <td style="text-align: center" class="text-dark fw-bold">
-                                                            {{ Str::title($ongoing_dp->nama) }}
+                                                            {{ Str::title($ongoing_dp->user->nama) }}
                                                         </td> --}}
                                                         <td style="text-align: center">
                                                             <a href="" data-bs-toggle="modal"
@@ -585,7 +585,7 @@
                                                                     <dl class="row mb-0">
                                                                         <dt class="col-sm-4">Nama Produk</dt>
                                                                         <dd class="col-sm-8">
-                                                                            {{ Str::title($ongoing_dp->nama_produk) }}
+                                                                            {{ Str::title($ongoing_dp->produk->nama_produk) }}
                                                                         </dd>
                                                                         <dt class="col-sm-4">Total Pesanan</dt>
                                                                         <dd class="col-sm-8">{{ $ongoing_dp->quantity }}
@@ -603,7 +603,7 @@
                                                                         </dd>
                                                                         <dt class="col-sm-4">Ongkir </dt>
                                                                         <dd class="col-sm-8">@php
-                                                                            echo rupiah($ongoing_dp->ongkir) . ' [ ' . $ongoing_dp->nama_kota . ' ]';
+                                                                            echo rupiah($ongoing_dp->ongkir) . ' [ ' . $ongoing_dp->alamat->nama_kota . ' ]';
                                                                         @endphp</dd>
                                                                         <dt class="col-sm-4">Total</dt>
                                                                         <dd class="col-sm-8">

@@ -12,11 +12,11 @@
                         <ul>
                             <li style="margin-right: 15px">
                                 <a class="cart-icon" href="/login" title="Login"><i
-                                        class="zmdi zmdi-account"></i></a>
+                                        class="fas fa-user"></i></a>
                             </li>
                             {{-- <li>
                                 <a class="cart-icon" href="#">
-                                    <i class="zmdi zmdi-shopping-cart"></i>
+                                    <i class="fas fa-shopping-cart"></i>
                                     <span>3</span>
                                 </a>
                                 <div class="mini-cart-brief text-left">
@@ -35,7 +35,7 @@
                                                 <p class="mb-0">Price : $ 100.00</p>
                                                 <p class="mb-0">Qty : 02 </p>
                                                 <span class="cart-delete"><a href="#"><i
-                                                            class="zmdi zmdi-close"></i></a></span>
+                                                            class="fas fa-times"></i></a></span>
                                             </div>
                                         </div>
                                         <div class="single-cart clearfix">
@@ -48,7 +48,7 @@
                                                 <p class="mb-0">Price : $ 300.00</p>
                                                 <p class="mb-0">Qty : 01 </p>
                                                 <span class="cart-delete"><a href="#"><i
-                                                            class="zmdi zmdi-close"></i></a></span>
+                                                            class="fas fa-times"></i></a></span>
                                             </div>
                                         </div>
                                     </div>

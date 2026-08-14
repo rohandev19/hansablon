@@ -67,7 +67,7 @@
                                     <div class="mt-4 mt-xl-3">
                                         <a href="#" class="text-primary">{{ Str::upper($produk->jenis_kategori) }}</a>
                                         <h5 class="mt-1 mb-3">{{ Str::title($produk->nama_produk) }}</h5>
-                                        <h5 class="mt-2">{{ rupiah($produk->harga_produk) }}</h5>
+                                        <h5 class="mt-2">{{ rupiah($produk->harga_eceran) }}</h5>
 
                                         <hr class="my-4">
 
@@ -76,7 +76,7 @@
                                             <table class="table table-bordered mt-2">
                                                 <tbody>
                                                     <tr>
-                                                        <td>{{ $produk->harga_produk ? rupiah($produk->harga_produk) : 'Harga Tidak Tersedia' }}</td>
+                                                        <td>{{ $produk->harga_eceran ? rupiah($produk->harga_eceran) : 'Harga Tidak Tersedia' }}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -88,9 +88,9 @@
                                             <p class="text-muted mb-2"><i class="mdi mdi-check-bold text-success me-2"></i>Tersedia Seluruh Ukuran Pakaian</p>
                                         </div>
 
-                                        <form action="{{ route('keranjang.nongrosir') }}" method="POST">
+                                        <form action="{{ route('keranjang.store') }}" method="POST">
                                             @csrf
-                                            <input type="hidden" name="id_produknon" value="{{ $produk->id_produknon }}">
+                                            <input type="hidden" name="id_produk" value="{{ $produk->id_produk }}">
                                             <input type="number" name="demo0" value="1" min="1" required>
                                             <button type="submit" class="btn btn-primary mt-3">
                                                 <i class="mdi mdi-cart me-2"></i> Masukan Keranjang

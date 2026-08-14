@@ -2,91 +2,55 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreKategoriRequest;
+use App\Http\Requests\UpdateKategoriRequest;
 use App\Models\Kategori;
-use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class KategoriProdukController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): View
     {
         $kategori = Kategori::latest()->paginate(4);
         return view('admin.kategori.kategori', compact('kategori'));
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-
-    }
-
-    /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreKategoriRequest $request): RedirectResponse
     {
-        $request->validate([
-            'kategori'=>'required|unique:kategori,jenis_kategori'
-        ]);
-
         Kategori::create([
-            'jenis_kategori'=>$request->kategori,
+            'jenis_kategori' => $request->validated('kategori'),
         ]);
 
         return back()->with('success', 'Berhasil Membuat Kategori Baru');
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
-        $update = Kategori::find($id);
+        $update = Kategori::findOrFail($id);
         $kategori = Kategori::latest()->paginate(4);
 
-        return view('admin.kategori.kategori_edit', compact(['update','kategori']));
+        return view('admin.kategori.kategori_edit', compact(['update', 'kategori']));
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateKategoriRequest $request, int $id): RedirectResponse
     {
-        $request->validate([
-            'kategori'=>'required'
-        ]);
-
-        Kategori::where('id_kategori', $id)->update([
-            'jenis_kategori'=>$request->kategori,
+        $kategori = Kategori::findOrFail($id);
+        
+        $kategori->update([
+            'jenis_kategori' => $request->validated('kategori'),
         ]);
 
         return to_route('kategori.index')->with('success', 'Berhasil Perbaharaui Kategori');
@@ -94,13 +58,18 @@ class KategoriProdukController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id): RedirectResponse
     {
-        Kategori::where('id_kategori', $id)->delete();
+        $kategori = Kategori::findOrFail($id);
+        
+        // Cek apakah ada produk yang masih menggunakan kategori ini sebelum dihapus
+        // (Ini contoh penerapan defensive programming sesuai skill resilience)
+        if ($kategori->produk()->exists()) {
+            return back()->with('error', 'Gagal Menghapus Kategori: Masih ada produk yang menggunakan kategori ini.');
+        }
+
+        $kategori->delete();
 
         return to_route('kategori.index')->with('delete', 'Berhasil Menghapus Kategori');
     }

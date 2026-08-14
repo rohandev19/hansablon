@@ -44,13 +44,13 @@
                             @foreach ($laporan as $laporan)
                                 <tr>
                                     <td>#P00{{ $laporan->id_pesanan }}</td>
-                                    <td><b>{{ Str::title($laporan->nama_produk) }}</b></td>
+                                    <td><b>{{ Str::title($laporan->produk->nama_produk) }}</b></td>
                                     <td>{{ $laporan->quantity }} Pcs</td>
                                     {{-- <td><b>{{ Str::title($laporan->variasi) }}</b></td>
                                     <td><b>{{ Str::title($laporan->sablon) }}</b></td> --}}
                                     <td>
                                         @php
-                                            echo rupiah($laporan->ongkir).' [ '. $laporan->nama_kota.' / '.$laporan->nama_prov.' ] '
+                                            echo rupiah($laporan->ongkir).' [ '. $laporan->alamat->nama_kota.' / '.$laporan->alamat->nama_prov.' ] '
                                         @endphp
                                     </td>
                                     <td>

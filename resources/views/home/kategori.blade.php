@@ -58,7 +58,13 @@
                                                         </a>
                                                     </h5>
                                                     <div class="product-price mb-3 text-danger font-weight-bold">
-                                                        {{ rupiah($produks->harga_produk1) }}
+                                                        @php
+                                                            if(Auth::check() && Auth::user()->is_b2b && $produks->tipe_produk == 'grosir') {
+                                                                echo rupiah($produks->harga_produk1) . ' <span class="badge badge-success text-xs" style="font-size:9px;">B2B</span>';
+                                                            } else {
+                                                                echo rupiah($produks->harga_eceran);
+                                                            }
+                                                        @endphp
                                                     </div>
                                                     <a href="{{ route('detail_produk', $produks->id_produk) }}" class="btn btn-warning w-100">Pesan Produk</a>
                                                 </div>

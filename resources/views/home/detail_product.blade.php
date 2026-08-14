@@ -18,28 +18,28 @@
                                 <img src="/produk/{{ $detail->foto_produk1 }}" alt="" />
                                 <a class="view-full-screen" href="/produk/{{ $detail->foto_produk1 }}"
                                     data-lightbox="roadtrip" data-title="{{ $detail->nama_produk }}">
-                                    <i class="zmdi zmdi-zoom-in"></i>
+                                    <i class="fas fa-search-plus"></i>
                                 </a>
                             </div>
                             <div>
                                 <img src="/produk/{{ $detail->foto_produk2 }}" alt="" />
                                 <a class="view-full-screen" href="/produk/{{ $detail->foto_produk2 }}"
                                     data-lightbox="roadtrip" data-title="{{ $detail->nama_produk }}">
-                                    <i class="zmdi zmdi-zoom-in"></i>
+                                    <i class="fas fa-search-plus"></i>
                                 </a>
                             </div>
                             <div>
                                 <img src="/produk/{{ $detail->foto_produk3 }}" alt="" />
                                 <a class="view-full-screen" href="/produk/{{ $detail->foto_produk3 }}"
                                     data-lightbox="roadtrip" data-title="{{ $detail->nama_produk }}">
-                                    <i class="zmdi zmdi-zoom-in"></i>
+                                    <i class="fas fa-search-plus"></i>
                                 </a>
                             </div>
                             <div>
                                 <img src="/produk/{{ $detail->foto_produk4 }}" alt="" />
                                 <a class="view-full-screen" href="/produk/{{ $detail->foto_produk4 }}"
                                     data-lightbox="roadtrip" data-title="{{ $detail->nama_produk }}">
-                                    <i class="zmdi zmdi-zoom-in"></i>
+                                    <i class="fas fa-search-plus"></i>
                                 </a>
                             </div>
                         </div>
@@ -112,13 +112,21 @@
                                             @endphp
                                             <tr>
                                                 <td>
-                                                    @if ($detail->harga_produk1 == null)
-                                                        {{ 'Harga Tidak Tersedia' }}
-                                                    @else
-                                                        @php
-                                                            echo rupiah($detail->harga_produk1);
-                                                        @endphp
-                                                    @endif
+                                                    @php
+                                                        if(Auth::check() && Auth::user()->is_b2b && $detail->tipe_produk == 'grosir') {
+                                                            if ($detail->harga_produk1 == null) {
+                                                                echo 'Harga Belum di Setting';
+                                                            } else {
+                                                                echo rupiah($detail->harga_produk1) . ' <span class="badge badge-success">Harga Khusus B2B</span>';
+                                                            }
+                                                        } else {
+                                                            if ($detail->harga_eceran == null) {
+                                                                echo 'Harga Belum di Setting';
+                                                            } else {
+                                                                echo rupiah($detail->harga_eceran);
+                                                            }
+                                                        }
+                                                    @endphp
                                                 </td>
                                                 <td>
                                                     @if ($detail->harga_produk2 == null)
@@ -265,7 +273,7 @@
                                                 <div class="pro-reviewer-comment">
                                                     <div class="fix">
                                                         <div class="floatleft mbl-center">
-                                                            <h5 class="text-uppercase mb-0"><strong>{{ Str::title($komentar->nama) }}</strong>
+                                                            <h5 class="text-uppercase mb-0"><strong>{{ Str::title($komentar->user->nama) }}</strong>
                                                             </h5>
                                                             <p class="reply-date">{{ $komentar->created_at }}</p>
                                                         </div>

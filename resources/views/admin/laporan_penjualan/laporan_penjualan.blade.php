@@ -56,8 +56,8 @@
                                         @foreach ($transaksi as $transaksi)
                                             <tr>
                                                 <td>#P00{{ $transaksi->id_pesanan }}</td>
-                                                <td>{{ Str::Title($transaksi->nama_produk) }}</td>
-                                                <td>{{ $transaksi->nama_kota . ' - ' . $transaksi->nama_prov }}</td>
+                                                <td>{{ Str::Title($transaksi->produk->nama_produk) }}</td>
+                                                <td>{{ $transaksi->alamat->nama_kota . ' - ' . $transaksi->alamat->nama_prov }}</td>
                                                 <td>{{ $transaksi->quantity }} Pcs</td>
                                                 <td>
                                                     @php

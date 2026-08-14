@@ -63,7 +63,11 @@
                                                     <div class="product-price mb-3">
                                                         <span class="text-danger font-weight-bold">
                                                             @php
-                                                                echo rupiah($produks->harga_produk1);
+                                                                if(Auth::check() && Auth::user()->is_b2b && $produks->tipe_produk == 'grosir') {
+                                                                    echo rupiah($produks->harga_produk1) . ' <span class="badge badge-success text-xs" style="font-size:9px;">B2B</span>';
+                                                                } else {
+                                                                    echo rupiah($produks->harga_eceran);
+                                                                }
                                                             @endphp
                                                         </span>
                                                     </div>

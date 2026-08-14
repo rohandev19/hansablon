@@ -50,10 +50,10 @@
                                             @foreach ($riwayat as $riwayat)
                                             <tr>
                                                 <td>#P00{{ $riwayat->id_pesanan }}</td>
-                                                <td>{{ Str::title($riwayat->nama_produk) }}</td>
+                                                <td>{{ Str::title($riwayat->produk->nama_produk ?? 'Unknown') }}</td>
                                                 <td><span class="badge bg-success">{{ Str::upper($riwayat->status) }}</span></td>
                                                 <td>{{ $riwayat->quantity }} Pcs</td>
-                                                <td>{{ $riwayat->nama_kota.' [ '.$riwayat->nama_prov.' ] ' }}</td>
+                                                <td>{{ ($riwayat->alamat->nama_kota ?? '') . ' [ ' . ($riwayat->alamat->nama_prov ?? '') . ' ] ' }}</td>
                                                 <td>{{ $riwayat->updated_at }}</td>
                                                 <td><a href="{{ route('pesanan.show', $riwayat->id_pesanan) }}"
                                                     class="btn btn-success btn-sm"><i

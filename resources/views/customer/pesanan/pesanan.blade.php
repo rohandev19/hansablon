@@ -102,7 +102,7 @@
                                                                 class="text-dark fw-bold">#P00{{ $pesanan_paid->id_pesanan }}</a>
                                                         </td>
                                                         <td>
-                                                            {{ Str::title($pesanan_paid->nama_produk) }}
+                                                            {{ Str::title($pesanan_paid->produk->nama_produk) }}
                                                         </td>
                                                         <td style="text-align: center">
                                                             {{ $pesanan_paid->quantity }} Pcs
@@ -167,7 +167,7 @@
                                                                 class="text-dark fw-bold">#P00{{ $ongoing->id_pesanan }}</a>
                                                         </td>
                                                         <td>
-                                                            {{ Str::title($ongoing->nama_produk) }}
+                                                            {{ Str::title($ongoing->produk->nama_produk) }}
                                                         </td>
                                                         <td style="text-align: center">
                                                             {{ $ongoing->quantity }} Pcs
@@ -242,7 +242,7 @@
                                                                     <dl class="row mb-0">
                                                                         <dt class="col-sm-4">Nama Produk</dt>
                                                                         <dd class="col-sm-8">
-                                                                            {{ Str::title($ongoing->nama_produk) }}
+                                                                            {{ Str::title($ongoing->produk->nama_produk) }}
                                                                         </dd>
                                                                         <dt class="col-sm-4">Total Pesanan</dt>
                                                                         <dd class="col-sm-8">
@@ -261,7 +261,7 @@
                                                                         </dd>
                                                                         <dt class="col-sm-4">Ongkir </dt>
                                                                         <dd class="col-sm-8">@php
-                                                                            echo rupiah($ongoing->ongkir) . ' [ ' . $ongoing->nama_kota . ' ]';
+                                                                            echo rupiah($ongoing->ongkir) . ' [ ' . $ongoing->alamat->nama_kota . ' ]';
                                                                         @endphp</dd>
                                                                         <dt class="col-sm-4">Total</dt>
                                                                         <dd class="col-sm-8">
@@ -334,7 +334,7 @@
                                                                 class="text-dark fw-bold">#P00{{ $kirim->id_pesanan }}</a>
                                                         </td>
                                                         <td>
-                                                            {{ Str::title($kirim->nama_produk) }}
+                                                            {{ Str::title($kirim->produk->nama_produk) }}
                                                         </td>
                                                         <td style="text-align: center">
                                                             {{ $kirim->updated_at }} <br>

@@ -11,123 +11,97 @@ class PesananAdminController extends Controller
 {
     public function index()
     {
-     $konfirmasi = Pesanan::join('produk', 'produk.id_produk', '=', 'pesanan.id_produk')
-     ->join('user_alamat', 'user_alamat.id_user_alamat', '=', 'pesanan.id_alamat')
-     ->select('pesanan.*', 'produk.*', 'user_alamat.nama_prov', 'user_alamat.nama_kota')
-     ->Where('pesanan.status','Bukti Pembayaraan Sedang Di Tinjau')
-     ->Where('pesanan.tipe_pembayaran', 'lunas')
-     ->orderBy('pesanan.updated_at', 'desc')
-     ->get();
+        // Eloquent Eager Loading - Optimized from 5 queries to 1 query
+        $allPesanan = Pesanan::with(['produk', 'alamat', 'user'])
+            ->orderBy('updated_at', 'desc')
+            ->get();
 
-    $ongoing = Pesanan::join('produk', 'produk.id_produk', '=', 'pesanan.id_produk')
-    ->join('user_alamat', 'user_alamat.id_user_alamat', '=', 'pesanan.id_alamat')
-    ->join('users', 'users.id', '=', 'pesanan.id_user')
-    ->select('pesanan.*', 'produk.nama_produk', 'user_alamat.nama_prov', 'user_alamat.nama_kota', 'users.nama')
-    ->Where('pesanan.status','Pesanan Di Terima')
-    ->Where('pesanan.tipe_pembayaran', 'lunas')
-    ->orderBy('pesanan.id_pesanan', 'desc')
-    ->get();
+        $konfirmasi = $allPesanan->where('status', 'Bukti Pembayaraan Sedang Di Tinjau')->where('tipe_pembayaran', 'lunas');
+        $ongoing = $allPesanan->where('status', 'Pesanan Di Terima')->where('tipe_pembayaran', 'lunas');
+        $kirim = $allPesanan->where('status', 'Barang Dalam Pengiriman');
+        $konfirmasi_dp = $allPesanan->where('status', 'Bukti Pembayaraan Sedang Di Tinjau')->where('tipe_pembayaran', 'dp');
+        $ongoing_dp = $allPesanan->where('status', 'Pesanan Di Terima')->where('tipe_pembayaran', 'dp');
 
-    $kirim = Pesanan::join('produk', 'produk.id_produk', '=', 'pesanan.id_produk')
-    ->join('user_alamat', 'user_alamat.id_user_alamat', '=', 'pesanan.id_alamat')
-    ->join('users', 'users.id', '=', 'pesanan.id_user')
-    ->select('pesanan.*', 'produk.nama_produk', 'user_alamat.nama_prov', 'user_alamat.nama_kota', 'users.nama')
-    ->Where('pesanan.status','Barang Dalam Pengiriman')
-    ->orderBy('pesanan.id_pesanan', 'desc')
-    ->get();
-
-    $konfirmasi_dp = Pesanan::join('produk', 'produk.id_produk', '=', 'pesanan.id_produk')
-    ->join('user_alamat', 'user_alamat.id_user_alamat', '=', 'pesanan.id_alamat')
-    ->select('pesanan.*', 'produk.*', 'user_alamat.nama_prov', 'user_alamat.nama_kota')
-    ->Where('pesanan.status','Bukti Pembayaraan Sedang Di Tinjau')
-    ->Where('pesanan.tipe_pembayaran', 'dp')
-    ->orderBy('pesanan.updated_at', 'desc')
-    ->get();
-
-    $ongoing_dp = Pesanan::join('produk', 'produk.id_produk', '=', 'pesanan.id_produk')
-    ->join('user_alamat', 'user_alamat.id_user_alamat', '=', 'pesanan.id_alamat')
-    ->join('users', 'users.id', '=', 'pesanan.id_user')
-    ->select('pesanan.*', 'produk.nama_produk', 'user_alamat.nama_prov', 'user_alamat.nama_kota', 'users.nama')
-    ->Where('pesanan.status','Pesanan Di Terima')
-    ->Where('pesanan.tipe_pembayaran', 'dp')
-    ->orderBy('pesanan.id_pesanan', 'desc')
-    ->get();
-
-     return view('admin.pesanan.pesanan', compact(['konfirmasi','ongoing','kirim','konfirmasi_dp','ongoing_dp']));
+        return view('admin.pesanan.pesanan', compact(['konfirmasi','ongoing','kirim','konfirmasi_dp','ongoing_dp']));
     }
 
-    public function konfirm_pembayaran($id)
+    public function konfirm_pembayaran(int $id)
     {
-        Pesanan::find($id)->update([
-            'status'=>'Pesanan Di Terima'
+        Pesanan::findOrFail($id)->update([
+            'status' => 'Pesanan Di Terima'
         ]);
-        return back();
+        return back()->with('success', 'Pembayaran diterima.');
     }
 
-    public function tolak_pembayaran($id)
+    public function tolak_pembayaran(int $id)
     {
-        Pesanan::find($id)->update([
-            'status'=>'Pesanan Di Tolak'
+        Pesanan::findOrFail($id)->update([
+            'status' => 'Pesanan Di Tolak'
         ]);
-        return back();
+        return back()->with('success', 'Pembayaran ditolak.');
     }
 
-    public function cetak_pesanan($id)
+    public function cetak_pesanan(int $id)
     {
-        $pesanan = Pesanan::join('produk', 'produk.id_produk', '=', 'pesanan.id_produk')
-        ->join('user_alamat', 'user_alamat.id_user_alamat', '=', 'pesanan.id_alamat')
-        ->join('users', 'users.id', '=', 'pesanan.id_user')
-        ->select('pesanan.*', 'produk.*', 'user_alamat.no_telp','user_alamat.alamat','user_alamat.nama_penerima', 'user_alamat.nama_prov', 'user_alamat.nama_kota', 'users.*')
-        ->find($id);
-
+        $pesanan = Pesanan::with(['produk', 'alamat', 'user'])->findOrFail($id);
         return view('admin.pesanan.pesanan_cetak', compact(['pesanan']));
     }
 
-    public function download_request($id)
+    public function download_request(int $id)
     {
-        $desain = Pesanan::find($id);
-        $file = public_path()."/desain/".$desain->desain;
-        return Response::download($file, '#P00'.$desain->id_pesanan.'-'.$desain->desain,);
+        $pesanan = Pesanan::findOrFail($id);
+        
+        if (!$pesanan->desain) {
+            return back()->with('error', 'File desain tidak ditemukan.');
+        }
+
+        $file = public_path() . "/desain/" . $pesanan->desain;
+        
+        if (!file_exists($file)) {
+            return back()->with('error', 'File desain tidak ditemukan di server.');
+        }
+
+        return Response::download($file, '#P00' . $pesanan->id_pesanan . '-' . $pesanan->desain);
     }
 
-    public function store_resi(Request $request, $id)
+    public function store_resi(Request $request, int $id)
     {
         $request->validate([
-            'resi'=>'required'
+            'resi' => 'required|string|max:255'
         ]);
 
-        Pesanan::find($id)->update([
-            'status'=>'Barang Dalam Pengiriman',
-            'no_resi'=>$request->resi,
+        Pesanan::findOrFail($id)->update([
+            'status' => 'Barang Dalam Pengiriman',
+            'no_resi' => $request->resi,
         ]);
 
-        return back();
+        return back()->with('success', 'Resi berhasil disimpan.');
     }
 
-    public function kirim_tagihan($id)
+    public function kirim_tagihan(int $id)
     {
-        Pesanan::find($id)->update([
-            'dp_status'=>'tagihan deliver',
+        Pesanan::findOrFail($id)->update([
+            'dp_status' => 'tagihan deliver',
         ]);
 
-        return back();
+        return back()->with('success', 'Tagihan berhasil dikirim.');
     }
 
-    public function tolak_sisa_dp($id)
+    public function tolak_sisa_dp(int $id)
     {
-        Pesanan::find($id)->update([
-            'dp_status'=>'tagihan sisa tolak',
+        Pesanan::findOrFail($id)->update([
+            'dp_status' => 'tagihan sisa tolak',
         ]);
 
-        return back();
+        return back()->with('success', 'Pelunasan ditolak.');
     }
 
-    public function terima_sisa_dp($id)
+    public function terima_sisa_dp(int $id)
     {
-        Pesanan::find($id)->update([
-            'dp_status'=>'lunas',
+        Pesanan::findOrFail($id)->update([
+            'dp_status' => 'lunas',
         ]);
 
-        return back();
+        return back()->with('success', 'Pelunasan diterima.');
     }
 }

@@ -35,6 +35,8 @@
     <link rel="stylesheet" href="/hurst/css/lightbox.min.css">
     <!-- material-design-iconic-font css -->
     <link rel="stylesheet" href="/hurst/css/material-design-iconic-font.css">
+    <!-- fontawesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- All common css of theme -->
     <link rel="stylesheet" href="/hurst/css/default.css">
     <!-- style css -->

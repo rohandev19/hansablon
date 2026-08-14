@@ -51,18 +51,18 @@
                                         <div class="col-6">
                                             <address>
                                                 <strong>Pemesan:</strong><br>
-                                                {{ Str::title($pesanan->nama) }}<br>
-                                                {{ $pesanan->email }}<br>
+                                                {{ Str::title($pesanan->user->nama) }}<br>
+                                                {{ $pesanan->user->email }}<br>
                                             </address>
                                         </div><!-- end col -->
                                         <div class="col-6 text-end">
                                             <address>
                                                 <strong>Penerima / Lokasi Pengiriman:</strong><br>
-                                                {{ Str::title($pesanan->nama_penerima) }}<br>
-                                                {{ Str::title($pesanan->alamat) }}<br>
-                                                Kab / Kota : {{ $pesanan->nama_kota }}<br>
-                                                Prov : {{ $pesanan->nama_prov }} <br>
-                                                [Telp : {{ $pesanan->no_telp }}]
+                                                {{ Str::title($pesanan->alamat->nama_penerima) }}<br>
+                                                {{ Str::title($pesanan->alamat->alamat) }}<br>
+                                                Kab / Kota : {{ $pesanan->alamat->nama_kota }}<br>
+                                                Prov : {{ $pesanan->alamat->nama_prov }} <br>
+                                                [Telp : {{ $pesanan->alamat->no_telp }}]
                                             </address>
                                         </div><!-- end col -->
                                     </div><!-- end row -->
@@ -112,12 +112,12 @@
                                                     </thead>
                                                     <tbody>
                                                         <tr>
-                                                            <td><img src="/produk/{{ $pesanan->foto_produk1 }}"
+                                                            <td><img src="/produk/{{ $pesanan->produk->foto_produk1 }}"
                                                                     alt="product-img" title="product-img" class="avatar-md">
                                                             </td>
                                                             <td>
                                                                 <h5 class="font-size-16 text-truncate"><a href="#"
-                                                                        class="text-reset">{{ Str::upper($pesanan->nama_produk) }}</a>
+                                                                        class="text-reset">{{ Str::upper($pesanan->produk->nama_produk) }}</a>
                                                                 </h5>
                                                                 <p class="font-size-14 mb-0 text-muted">Jumlah Pesanan :
                                                                     {{ $pesanan->quantity }}</p>

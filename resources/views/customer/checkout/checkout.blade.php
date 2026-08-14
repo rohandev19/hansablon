@@ -263,9 +263,9 @@
                                     <tbody>
                                         @foreach ($keranjang as $item_keranjang)
                                             <tr>
-                                                <td><img src="/produk/{{ $item_keranjang->foto_produk1 }}" alt="product-img" title="product-img" class="avatar-md"></td>
+                                                <td><img src="/produk/{{ $item_keranjang->produk->foto_produk1 ?? '' }}" alt="product-img" title="product-img" class="avatar-md"></td>
                                                 <td>
-                                                    <h5 class="font-size-16 text-truncate"><a href="#" class="text-reset">{{ Str::title($item_keranjang->nama_produk) }}</a></h5>
+                                                    <h5 class="font-size-16 text-truncate"><a href="#" class="text-reset">{{ Str::title($item_keranjang->produk->nama_produk ?? 'Unknown') }}</a></h5>
                                                     <p class="font-size-14 mb-0 text-muted">Quantity : {{ $item_keranjang->total }} Pcs</p>
                                                 </td>
                                             </tr>

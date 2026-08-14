@@ -26,7 +26,7 @@
                             <p class="card-title-desc">Perhatikan penulisan setiap produk agar dapat membuat konsumen nyaman
                                 bertransaksi</p>
 
-                            <form action="{{ route('produk_non.update', $produk->id_produknon) }}" method="post" enctype="multipart/form-data">
+                            <form action="{{ route('produk_non.update', $produk->id_produk) }}" method="post" enctype="multipart/form-data">
                                 @method('put')
                                 @csrf
                                 <div class="mb-3">
@@ -61,7 +61,7 @@
                                     is-invalid
                                     @enderror"
                                         name="harga_produk_non"
-                                        data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'digits': 2, 'digitsOptional': false, 'prefix': 'Rp. ', 'placeholder': '0'" value="{{ $produk->harga_produk }}">
+                                        data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'digits': 2, 'digitsOptional': false, 'prefix': 'Rp. ', 'placeholder': '0'" value="{{ $produk->harga_eceran }}">
                                     @error('harga_produk_non')
                                         <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror

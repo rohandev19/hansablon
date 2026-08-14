@@ -135,12 +135,12 @@
                                             <td>
                                                 <div class="d-flex align-items-center">
                                                     {{-- IMG SRC SUDAH DIPERBAIKI DENGAN ASSET() --}}
-                                                    <img src="{{ asset('produk/' . $pesanan->foto_produk1) }}"
+                                                    <img src="{{ asset('produk/' . $pesanan->produk->foto_produk1) }}"
                                                         alt="Foto Produk"
                                                         onerror="this.onerror=null;this.src='{{ asset('images/default-product.png') }}';"
                                                         class="avatar-sm me-3 rounded">
                                                     <div>
-                                                        <h6 class="mb-0">{{ Str::upper($pesanan->nama_produk) }}</h6>
+                                                        <h6 class="mb-0">{{ Str::upper($pesanan->produk->nama_produk) }}</h6>
                                                         <small class="text-muted">Qty: {{ $pesanan->quantity }} pcs</small>
                                                     </div>
                                                 </div>
@@ -171,9 +171,9 @@
                                 </table>
                                 <hr>
                                 <h6><b>Alamat Pengiriman</b></h6>
-                                <p class="mb-1">{{ Str::title($pesanan->nama_penerima) }} ({{ $pesanan->no_telp }})</p>
+                                <p class="mb-1">{{ Str::title($pesanan->alamat->nama_penerima) }} ({{ $pesanan->alamat->no_telp }})</p>
                                 <p class="text-muted mb-0">
-                                    {{ Str::title($pesanan->alamat . ', ' . $pesanan->nama_kota . ' [ ' . $pesanan->nama_prov . ']') }}
+                                    {{ Str::title($pesanan->alamat->alamat . ', ' . $pesanan->alamat->nama_kota . ' [ ' . $pesanan->alamat->nama_prov . ']') }}
                                 </p>
                             </div>
                         </div>
@@ -242,24 +242,33 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="form-label">Upload Bukti Pembayaran<span
-                                            class="text-danger">*</span></label>
-                                    <input type="file" name="bukti_bayar"
-                                        class="form-control @error('bukti_bayar') is-invalid @enderror" accept="image/*"
-                                        id="imgInp1" required>
-                                    @error('bukti_bayar')
-                                        <span class="invalid-feedback">{{ $message }}</span>
-                                    @enderror
-                                </div>
-
-                                <div class="mb-4">
-                                    <img id="output1" src="{{ asset('images/upload.png') }}" class="img-fluid rounded"
-                                        style="width: 100%; max-height: 200px; object-fit: contain; border: 1px solid #ddd; padding: 5px;" />
+                                    <label class="form-label">Pilih Channel Pembayaran (Mockup)<span class="text-danger">*</span></label>
+                                    <div class="row">
+                                        <div class="col-6 mb-2">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="payment_channel" id="bca_va" value="bca" checked>
+                                                <label class="form-check-label" for="bca_va">BCA Virtual Account</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 mb-2">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="payment_channel" id="mandiri_va" value="mandiri">
+                                                <label class="form-check-label" for="mandiri_va">Mandiri VA</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 mb-2">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="payment_channel" id="qris" value="qris">
+                                                <label class="form-check-label" for="qris">QRIS</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <small class="text-muted mt-2 d-block"><i class="mdi mdi-information-outline"></i> Ini adalah simulasi Payment Gateway. Pembayaran akan otomatis terkonfirmasi.</small>
                                 </div>
 
                                 <div class="d-grid">
-                                    <button type="submit" class="btn btn-primary btn-lg w-100">
-                                        <i class="mdi mdi-send me-2"></i> Kirim Bukti Pembayaran
+                                    <button type="submit" class="btn btn-success btn-lg w-100">
+                                        <i class="mdi mdi-credit-card-check me-2"></i> Bayar Sekarang
                                     </button>
                                 </div>
                             </div>
@@ -273,13 +282,6 @@
 
 @section('js')
     <script>
-        imgInp1.onchange = evt => {
-            const [file] = imgInp1.files
-            if (file) {
-                output1.src = URL.createObjectURL(file)
-            }
-        }
-
         document.addEventListener('DOMContentLoaded', function () {
             const copyButtons = document.querySelectorAll('.btn-copy');
             copyButtons.forEach(button => {

@@ -20,7 +20,6 @@ return new class extends Migration {
             $table->string('foto_produk1')->nullable();
             $table->string('nama_produk')->nullable();
             $table->string('harga_produk')->nullable();
-            $table->enum('tipe_produk', ['produk', 'produknon'])->default('produk'); // Menambahkan tipe produk
             $table->timestamps();
         });
     }

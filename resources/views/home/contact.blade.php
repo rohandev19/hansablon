@@ -23,13 +23,13 @@
                     <h4 class="text-uppercase text-primary fw-bold mb-4">Contact Details</h4>
                     <ul class="list-unstyled mb-0">
                         <li class="mb-3 d-flex align-items-start">
-                            <i class="zmdi zmdi-pin fs-4 me-3 text-primary"></i>
+                            <i class="fas fa-map-marker-alt fs-4 me-3 text-primary"></i>
                             <div>
                                 <strong>Kp. Kelapa</strong><br>Depok, Indonesia
                             </div>
                         </li>
                         <li class="mb-3 d-flex align-items-start">
-                            <i class="zmdi zmdi-phone fs-4 me-3 text-primary"></i>
+                            <i class="fas fa-phone fs-4 me-3 text-primary"></i>
                             <span>085766464443</span>
                         </li>
                     </ul>

@@ -49,18 +49,18 @@
                                         @foreach ($produk as $data)
                                             <tr>
                                                 <td><b>{{ Str::upper($data->nama_produk) }}</b></td>
-                                                <td><i>{{ Str::upper($data->jenis_kategori) }}</i></td>
-                                                <td>{{ $data->harga_produk }}</td>
+                                                <td><i>{{ Str::upper($data->kategoriData->jenis_kategori ?? '') }}</i></td>
+                                                <td>{{ $data->harga_eceran }}</td>
                                                 <td align="center">
                                                     <img src="/produk/{{ $data->foto_produk1 }}" alt=""
                                                         height="30px" width="30px">
                                                     </td>
                                                     <td>{{ $data->created_at }}</td>
                                                     <td align="center">
-                                                    <a href="{{ route('produk_non.edit', $data->id_produknon) }}"
+                                                    <a href="{{ route('produk_non.edit', $data->id_produk) }}"
                                                         class="btn btn-warning waves-effect waves-light"><i
                                                             class="dripicons-pencil"></i> Edit</a>
-                                                    <form action="{{ route('produk_non.destroy', $data->id_produknon) }}"
+                                                    <form action="{{ route('produk_non.destroy', $data->id_produk) }}"
                                                         method="POST" style="display:inline"
                                                         onsubmit="return confirm('Apakah Yakin akan Di Hapus ?');">
                                                         @method('delete')

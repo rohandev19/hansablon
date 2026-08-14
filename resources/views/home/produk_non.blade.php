@@ -30,7 +30,7 @@
                         <form action="#">
                             <input type="text" placeholder="Search here..." />
                             <button type="submit">
-                                <i class="zmdi zmdi-search"></i>
+                                <i class="fas fa-search"></i>
                             </button>
                         </form>
                     </aside> --}}
@@ -81,19 +81,19 @@
                                                             echo rupiah($produk->harga_produk1);
                                                         @endphp
                                                     </span> --}}
-                                                    <a href="{{ route('detail_produk_non', $produks->id_produknon) }}"><img src="/produk/{{ $produks->foto_produk1 }}"
+                                                    <a href="{{ route('detail_produk_non', $produks->id_produk) }}"><img src="/produk/{{ $produks->foto_produk1 }}"
                                                             alt="" /></a>
                                                 </div>
                                                 <div class="product-info clearfix text-center">
                                                     <div class="fix">
-                                                        <h4 class="post-title"><a href="{{ route('detail_produk', $produks->id_produknon) }}">{{ Str::upper($produks->nama_produk) }}</a></h4>
+                                                        <h4 class="post-title"><a href="{{ route('detail_produk', $produks->id_produk) }}">{{ Str::upper($produks->nama_produk) }}</a></h4>
                                                     </div>
                                                     <div class="fix">
                                                          @php
-                                                            echo rupiah($produks->harga_produk);
+                                                            echo rupiah($produks->harga_eceran);
                                                         @endphp
                                                     </div>
-                                                    <a href="{{ route('detail_produk_non', $produks->id_produknon) }}" class="btn btn-warning mt-3 w-100">Pesan Produk</a>
+                                                    <a href="{{ route('detail_produk_non', $produks->id_produk) }}" class="btn btn-warning mt-3 w-100">Pesan Produk</a>
                                                 </div>
                                             </div>
                                         </div>
