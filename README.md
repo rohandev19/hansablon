@@ -1,8 +1,8 @@
-# HANN PRINT - B2B & B2C E-Commerce Sablon Platform 🚀
+# HANN PRINT - B2B & B2C E-Commerce Sablon Platform 
 
 A modern, scalable, and robust E-Commerce platform tailored for the custom printing (sablon) industry. This platform elegantly handles both B2B (wholesale/resellers) and B2C (retail) workflows within a unified, seamless system.
 
-## ✨ Key Features & Architecture
+##  Key Features & Architecture
 
 ### 1. Dual-Track E-Commerce (B2B & B2C)
 - **Role-Based Pricing**: Dynamic pricing tiers based on user type (Wholesale vs Retail).
@@ -22,14 +22,14 @@ A modern, scalable, and robust E-Commerce platform tailored for the custom print
 - **Data Visualization**: Dynamic chart integration showing sales trends and product performance.
 - **Order Management**: Comprehensive tools to update order statuses, manage stock, and view transaction history.
 
-## 🛠️ Technology Stack
+##  Technology Stack
 
 - **Backend**: Laravel 9.x (PHP 8.1+)
 - **Frontend**: Blade Templating Engine, Vanilla CSS, JS
 - **Database**: MySQL (Eloquent ORM)
 - **Design Pattern**: MVC (Model-View-Controller)
 
-## 🚀 Getting Started (Showcase Mode)
+##  Getting Started (Showcase Mode)
 
 To run this project locally with the pre-configured showcase data:
 
@@ -63,7 +63,7 @@ To run this project locally with the pre-configured showcase data:
    php artisan serve
    ```
 
-## 🔐 Demo Credentials
+##  Demo Credentials
 
 Use these credentials to explore the different user experiences:
 
@@ -73,7 +73,7 @@ Use these credentials to explore the different user experiences:
 | **B2B (Reseller)** | `b2b@pembeli.com` | `reseller123` | Access to wholesale pricing and bulk ordering. |
 | **B2C (Retail)** | `b2c@pembeli.com` | `pembeli123` | Standard retail customer experience. |
 
-## 📐 Senior Engineering Practices Demonstrated
+##  Senior Engineering Practices Demonstrated
 
 - **Database Normalization**: Merged redundant tables (`Produk` & `ProdukNon`) into a single, cohesive `Produk` table with a `tipe_produk` enum.
 - **Fat Model, Skinny Controller**: Business logic delegated appropriately to keep controllers clean.
